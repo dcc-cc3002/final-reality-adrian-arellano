@@ -1,12 +1,11 @@
 package com.github.cc3002.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,38 +16,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractCharacter implements ICharacter {
 
-  protected final BlockingQueue<ICharacter> turnsQueue;
   protected final String name;
-  private final CharacterClass characterClass;
-  private Weapon equippedWeapon = null;
+  protected final BlockingQueue<ICharacter> turnsQueue;
   private ScheduledExecutorService scheduledExecutor;
 
-  protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-      @NotNull String name, CharacterClass characterClass) {
+  protected AbstractCharacter(@NotNull final String name,
+                              @NotNull BlockingQueue<ICharacter> turnsQueue) {
     this.turnsQueue = turnsQueue;
     this.name = name;
-    this.characterClass = characterClass;
-  }
-
-  @Override
-  public void waitTurn() {
-    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    if (this instanceof PlayerCharacter) {
-      scheduledExecutor
-          .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
-    } else {
-      var enemy = (Enemy) this;
-      scheduledExecutor
-          .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
-    }
-  }
-
-  /**
-   * Adds this character to the turns queue.
-   */
-  private void addToQueue() {
-    turnsQueue.add(this);
-    scheduledExecutor.shutdown();
   }
 
   @Override
@@ -56,20 +31,35 @@ public abstract class AbstractCharacter implements ICharacter {
     return name;
   }
 
+  /* If there is no Weapon, the will throw an error. */
   @Override
-  public void equip(Weapon weapon) {
-    if (this instanceof PlayerCharacter) {
-      this.equippedWeapon = weapon;
+  public void waitTurn() {
+    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+    scheduledExecutor.schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
+  }
+
+  /** Adds this character to the turns queue. */
+  private void addToQueue() {
+    turnsQueue.add(this);
+    scheduledExecutor.shutdown();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName());
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
     }
+    if (!(o instanceof ICharacter)) {
+      return false;
+    }
+    /* This could be modified in the future. */
+    final ICharacter that = (ICharacter) o;
+    return getName().equals(that.getName());
   }
 
-  @Override
-  public Weapon getEquippedWeapon() {
-    return equippedWeapon;
-  }
-
-  @Override
-  public CharacterClass getCharacterClass() {
-    return characterClass;
-  }
 }

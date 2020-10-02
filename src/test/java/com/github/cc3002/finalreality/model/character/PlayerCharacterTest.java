@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.cc3002.finalreality.model.character.playable.CharacterClass;
+import com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter;
 import java.util.EnumMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author Ignacio Slater Muñoz.
  * @author <Your name>
- * @see PlayerCharacter
+ * @see AbstractPlayableCharacter
  */
 class PlayerCharacterTest extends AbstractCharacterTest {
 
@@ -45,7 +45,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     for (var characterClass :
         characterNames.keySet()) {
       testCharacters.add(
-          new PlayerCharacter(characterNames.get(characterClass), turns, characterClass));
+          new AbstractPlayableCharacter(characterNames.get(characterClass), turns, characterClass));
     }
   }
 
@@ -59,10 +59,10 @@ class PlayerCharacterTest extends AbstractCharacterTest {
         testCharacters) {
       var characterClass = character.getCharacterClass();
       var characterName = characterNames.get(characterClass);
-      checkConstruction(new PlayerCharacter(characterName, turns, characterClass),
+      checkConstruction(new AbstractPlayableCharacter(characterName, turns, characterClass),
           character,
-          new PlayerCharacter("Test", turns, characterClass),
-          new PlayerCharacter(characterName, turns,
+          new AbstractPlayableCharacter("Test", turns, characterClass),
+          new AbstractPlayableCharacter(characterName, turns,
               characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
                   : CharacterClass.THIEF));
       assertNotEquals(character, enemy);

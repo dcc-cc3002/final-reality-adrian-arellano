@@ -1,8 +1,5 @@
 package com.github.cc3002.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
-
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
@@ -12,29 +9,21 @@ import com.github.cc3002.finalreality.model.weapon.Weapon;
  */
 public interface ICharacter {
 
+  /* Getters */
+
+  /** Returns this character's name. */
+  String getName();
+
+  /* Getter related with the scheduleExecutor. */
+  /* In the future this method will throw an Exception. */
+  /** Returns this character's weight to the delay calculus. */
+  int getWeight();
+
+
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
    * seconds before adding the character to the queue.
    */
   void waitTurn();
 
-  /**
-   * Returns this character's name.
-   */
-  String getName();
-
-  /**
-   * Equips a weapon to the character.
-   */
-  void equip(Weapon weapon);
-
-  /**
-   * Return this character's equipped weapon.
-   */
-  Weapon getEquippedWeapon();
-
-  /**
-   * Returns this character's class.
-   */
-  CharacterClass getCharacterClass();
 }
