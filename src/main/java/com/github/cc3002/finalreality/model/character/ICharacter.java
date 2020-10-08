@@ -1,11 +1,11 @@
 package com.github.cc3002.finalreality.model.character;
 
 /**
- * This represents a character from the game.
- * A character can be controlled by the player or by the CPU (an enemy).
+ * This interface represents a character of the game,
+ *  and each functionality that a generic character should have.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Adrian Arellano
  */
 public interface ICharacter {
 
@@ -14,16 +14,22 @@ public interface ICharacter {
   /** Returns this character's name. */
   String getName();
 
-  /* Getter related with the scheduleExecutor. */
-  /* In the future this method will throw an Exception. */
-  /** Returns this character's weight to the delay calculus. */
-  int getWeight();
+  /**
+   * Returns this character's weight to the calculus of the delay,
+   *  in the case of a {@code IPlayableCharacter}, the weight could not exists,
+   *  when that happens, the method throws an {@exception NonEquippedWeapon}.
+   *
+   * @see #waitTurn()
+   */
+  int getWeight() throws NonEquippedWeapon;
 
 
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
-   * seconds before adding the character to the queue.
+   *  seconds before adding the character to the queue.
+   *
+   * This method does not catch exception thrown by {@link #getWeight()}.
    */
-  void waitTurn();
+  void waitTurn() throws NonEquippedWeapon;
 
 }

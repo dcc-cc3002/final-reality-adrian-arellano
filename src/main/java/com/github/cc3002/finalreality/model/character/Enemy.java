@@ -5,10 +5,10 @@ import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A class that holds all the information of a single enemy of the game.
+ * A class that represents a non-playable character of the game,
+ *  an enemy.
  *
- * @author Ignacio Slater Muñoz
- * @author <Your name>
+ * @author Adrian Arellano.
  */
 public class Enemy extends AbstractCharacter {
 
@@ -16,9 +16,9 @@ public class Enemy extends AbstractCharacter {
 
   /**
    * Creates a new character.
-   *    @param name: the PlayableCharacter's name
    *
-   *    @param turnsQueue: the queue with the characters waiting for their turn
+   * @param name       : the Enemy's name.
+   * @param turnsQueue : The queue of the game in which the character is.
    */
   public Enemy(@NotNull final String name, final int weight,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
@@ -32,19 +32,18 @@ public class Enemy extends AbstractCharacter {
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (!(o instanceof Enemy)) {
-      return false;
-    }
-    final Enemy enemy = (Enemy) o;
-    if (!(getWeight() == enemy.getWeight())) {
-      return false;
-    }
-    return super.equals(o);
+  public int hashCode() {
+    return Objects.hash(getName(), getWeight(), this.getClass());
   }
 
   @Override
-  public int hashCode() {
-    return Objects.hash(getWeight());
+  protected boolean equalsAuxiliary(@NotNull final ICharacter aCharacter) {
+    if (!(aCharacter instanceof Enemy)) {
+      return false;
+    }
+    Enemy that = (Enemy) aCharacter;
+    return getWeight() == that.getWeight();
   }
+
+
 }

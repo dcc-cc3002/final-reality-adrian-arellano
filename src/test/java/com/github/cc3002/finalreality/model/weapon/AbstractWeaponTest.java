@@ -61,7 +61,7 @@ public abstract class AbstractWeaponTest {
    *  can be held by only one Character a time.
    */
   @Test
-  public void oneCarrierTest() throws NonEquippableWeapon, NonAvailableWeapon {
+  public void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon {
     sampleCharacter1.equip(testWeapon1);
     assertEquals(testWeapon1, sampleCharacter1.getEquippedWeapon());
 

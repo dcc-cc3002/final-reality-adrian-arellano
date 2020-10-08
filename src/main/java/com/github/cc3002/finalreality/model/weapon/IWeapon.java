@@ -1,7 +1,14 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.playable.*;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * This interface represents a weapon in the game, and each
+ *  functionality that a generic weapon, should have.
+ *
+ * @author Adrian Arellano
+ */
 public interface IWeapon {
 
   /* Getters */
@@ -19,32 +26,29 @@ public interface IWeapon {
   IPlayableCharacter getCurrentCarrier();
 
 
-  /*
-   * These methods are supposed to be called, only
-   *  by their respective IPlayableCharacter sub-class.
+    /* Double Dispatch of "equip" */
+
+  /**
+   * Used in the double dispatch of
+   *  {@code IPlayableCharacter.equip(IWeapon aWeapon)}
+   *  to let the IPlayableCharacter knows this IWeapon sub-Type.
    */
+  void tryingToBeEquippedBy(@NotNull final IPlayableCharacter aPlayableCharacter) throws UnsupportedWeapon, NonAvailableWeapon;
 
-  /** Indicates to the Weapon that a Knight is trying to take it. */
-  void takenByKnight(Knight aKnight) throws NonEquippableWeapon, NonAvailableWeapon;
+    /* Setters use in that Double Dispatch. */
 
-  /** Indicates to the Weapon that a Engineer is trying to take it. */
-  void takenByEngineer(Engineer anEngineer) throws NonEquippableWeapon, NonAvailableWeapon;
+  /**
+   * Checks if this weapon has a carrier:
+   *  throws an {@exception NonAvailableWeapon} if it has
+   *  sets the {@param aPlayableCharacter} as the carrier if not.
+   */
+  void equippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon;
 
-  /** Indicates to the Weapon that a Thief is trying to take it. */
-  void takenByThief(Thief aThief) throws NonEquippableWeapon, NonAvailableWeapon;
-
-  /** Indicates to the Weapon that a BlackWizard is trying to take it. */
-  void takenByBlackWizard(BlackWizard aBlackWizard) throws NonEquippableWeapon, NonAvailableWeapon;
-
-  /** Indicates to the Weapon that a WhiteWizard is trying to take it. */
-  void takenByWhiteWizard(WhiteWizard aWhiteWizard) throws NonEquippableWeapon, NonAvailableWeapon;
-
-  /* Setter which is supposed to be called, only by a IPlayableCharacter sub-class. */
   /**
    * Sets the currentCarrier of this weapon as null.
    *  For security it only works, when the {@param supposedCarrier}
    *  actually is the currentCarrier of the Weapon.
    */
-  void unEquippedBy(IPlayableCharacter supposedCarrier);
+  void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier);
 
 }

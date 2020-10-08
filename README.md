@@ -17,3 +17,7 @@ enemies controlled by the computer.
 ---
 
 **The rest of the documentation is left for the users of this template to complete**
+
+
+#WE ARE GOING TO IMPLEMENT THE CHARACTERS THIEF:
+as a Character which can equip swords, knives and bows.
