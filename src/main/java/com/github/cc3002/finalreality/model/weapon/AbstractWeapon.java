@@ -1,14 +1,18 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.playable.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 /**
- * A class that holds all the information of a weapon.
+ * An abstract class which implements the basic behaviour
+ *  of a weapon in the game.
  *
- * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * It's important to highlight that, this is an abstract class,
+ *  so the whole behavior of a character is not here.
+ *
+ * @author Adrian Arellano
  */
 public abstract class AbstractWeapon implements IWeapon {
 
@@ -16,15 +20,16 @@ public abstract class AbstractWeapon implements IWeapon {
   private final int damage;
   private final int weight;
 
-  private IPlayableCharacter currentCarrier = null;
-
+  private IPlayableCharacter currentCarrier;
   /**
-   * The basic creator for a weapon, which initialize the object with:
-   *    @param name: the name of the Weapon.
-   *    @param damage: the damage that this Weapon deals.
-   *    @param weight: the weight of the Weapon which affects to the speed of an attack.
+   * Initializes some values of a generic weapon.
+   *
+   * @param name   : the name of the weapon.
+   * @param damage : the damage that the weapon deals.
+   * @param weight : the weight of the weapon (which affects to the speed of an attack).
    */
-  public AbstractWeapon(final String name, final int damage, final int weight) {
+  protected AbstractWeapon(@NotNull final String name, final int damage,
+                           final int weight) {
     this.name = name;
     this.damage = damage;
     this.weight = weight;
@@ -50,62 +55,37 @@ public abstract class AbstractWeapon implements IWeapon {
     return currentCarrier;
   }
 
-  /* Double dispatch by PlayableCharacter.equip */
-
-  /**
-   * Checks if this weapon has carrier:
-   *  throws an {@exception NonAvailableWeapon} if it has
-   *  sets the {@param aPlayableCharacter} as the carrier if not.
-   */
-  protected void equippedBy(IPlayableCharacter aPlayableCharacter) throws NonAvailableWeapon {
-    if (! (this.currentCarrier == null)) {
+  @Override
+  public void equippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon {
+    if (this.currentCarrier != null) {
+      /* The weapon has a carrier, a weapon can not be carried by to characters a time. */
       throw new NonAvailableWeapon();
-    } else {
-      this.currentCarrier = aPlayableCharacter;
     }
-  }
-
-  /** Throws the NonEquippableWeapon Exception. */
-  private void equippableError() throws NonEquippableWeapon {
-    throw new NonEquippableWeapon();
+    this.currentCarrier = newCarrier;
   }
 
   @Override
-  public void takenByKnight(Knight aKnight) throws NonEquippableWeapon, NonAvailableWeapon {
-    equippableError();
-  }
-
-  @Override
-  public void takenByEngineer(Engineer anEngineer) throws NonEquippableWeapon, NonAvailableWeapon {
-    equippableError();
-  }
-
-  @Override
-  public void takenByThief(Thief aThief) throws NonEquippableWeapon, NonAvailableWeapon {
-    equippableError();
-  }
-
-  @Override
-  public void takenByBlackWizard(BlackWizard aBlackWizard) throws NonEquippableWeapon, NonAvailableWeapon {
-    equippableError();
-  }
-
-  @Override
-  public void takenByWhiteWizard(WhiteWizard aWhiteWizard) throws NonEquippableWeapon, NonAvailableWeapon {
-    equippableError();
-  }
-
-  @Override
-  public void unEquippedBy(IPlayableCharacter supposedCarrier) {
+  public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) {
     if (supposedCarrier.equals(currentCarrier))
      this.currentCarrier = null;
   }
 
   @Override
   public int hashCode() {
-    /* I don't think that the carrier should affect this. */
-    return Objects.hash(getName(), getDamage(), getWeight());
+    /* I think that the carrier must not affect this. */
+    return Objects.hash(getName(), getDamage(), getWeight(), this.getClass());
   }
+
+  /**
+   * Method created to complete the method {@code equals}
+   *  of each IWeapon's sub-class.
+   *
+   * @param aWeapon : an object which {@code equals}
+   *                   said that is an instance of IWeapon.
+   *
+   * @see #equals(Object o)
+   */
+  protected abstract boolean equalsAuxiliary(@NotNull final IWeapon aWeapon);
 
   @Override
   public boolean equals(final Object o) {
@@ -115,12 +95,14 @@ public abstract class AbstractWeapon implements IWeapon {
     if (!(o instanceof IWeapon)) {
       return false;
     }
-    final IWeapon aWeapon = (IWeapon) o;
+    final IWeapon that = (IWeapon) o;
     /* Compares carriers, which could be null,
      * so the matter is the memory allocated space. */
-    return getDamage() == aWeapon.getDamage() &&
-           getWeight() == aWeapon.getWeight() &&
-           getName().equals(aWeapon.getName()) &&
-           getCurrentCarrier() == aWeapon.getCurrentCarrier();
+    return getDamage() == that.getDamage() &&
+        getWeight() == that.getWeight() &&
+        getName().equals(that.getName()) &&
+        getCurrentCarrier() == that.getCurrentCarrier() &&
+        this.equalsAuxiliary(that);
   }
+
 }

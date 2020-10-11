@@ -5,28 +5,41 @@ import com.github.cc3002.finalreality.model.character.ICharacter;
 
 import java.util.concurrent.BlockingQueue;
 
-import com.github.cc3002.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
+import com.github.cc3002.finalreality.model.weapon.*;
 import org.jetbrains.annotations.NotNull;
 
 
 /**
- * A class that holds all the information of a single character of the game.
+ * An abstract class which implements the basic behaviour
+ *  of a playable character in the game.
  *
- * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * It's important to highlight that, this is an abstract class,
+ *  so the whole behavior of a character is not here.
+ *
+ * @author Adrian Arellano
  */
 public abstract class AbstractPlayableCharacter extends AbstractCharacter implements IPlayableCharacter {
 
   protected IWeapon equippedWeapon = null;
 
   /**
-   * Creates a new character.
-   *    @param name: the PlayableCharacter's name
-   *    @param turnsQueue: the queue with the characters waiting for their turn
+   * Initializes some values of a generic playable character.
+   *
+   * @param name       : the PlayableCharacter's name.
+   * @param turnsQueue : the queue of the game in which the character is.
    */
-  public AbstractPlayableCharacter(@NotNull String name,
-                                   @NotNull BlockingQueue<ICharacter> turnsQueue) {
+  protected AbstractPlayableCharacter(@NotNull final String name,
+                                      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
     super(name, turnsQueue);
+  }
+
+  @Override
+  public int getWeight() throws NonEquippedWeapon {
+    if (equippedWeapon == null) {
+      throw new NonEquippedWeapon();
+    }
+    return equippedWeapon.getWeight();
   }
 
   @Override
@@ -34,27 +47,65 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
     return equippedWeapon;
   }
 
+  @Override
+  public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+    if (aWeapon.equals(this.equippedWeapon)) {
+      /* Nothing to do, the weapon is already equipped. */
+      return;
+    }
+    aWeapon.tryingToBeEquippedBy(this);
+  }
+
   /**
-   *  This method is supposed to be called, only by an IWeapon sub-class.
-   *   UnEquips the Weapon held and sets the weapon of this
-   *   PlayableCharacter as {@param aWeapon}.
+   * Created to be called, only by its own sub-classes.
+   * Tries to equip the {@param aWeapon}, if that doesn't throw a error, 
+   * then unEquips the {@param equippedWeapon} and sets {@param aWeapon}
+   * as the current equipped weapon of this PlayableCharacter.
    */
-  public void holdWeapon(IWeapon aWeapon) {
+  protected void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon {
+    aWeapon.equippedBy(this);
+
     equippedWeapon.unEquippedBy(this);
     this.equippedWeapon = aWeapon;
   }
 
+  /**
+   * Created to throw a {@exception UnsupportedWeapon}
+   *  when a WeaponType is unsupported by a
+   *  IPlayableCharacter's Sub-Type.
+   */
+  private void error() throws UnsupportedWeapon {
+    throw new UnsupportedWeapon();
+  }
+
   @Override
-  public int getWeight() {
-    if (!(equippedWeapon == null)) {
-      return equippedWeapon.getWeight();
-    }
-    return 0;
+  public void equipAnAxe(@NotNull final Axe anAxe) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equipABow(@NotNull final Bow aBow) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equipAKnife(@NotNull final Knife aKnife) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equipAStaff(@NotNull final Staff aStaff) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equipASword(@NotNull final Sword aSword) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
   }
 
   /*
-   * Equals does not depend on the equippedWeapon.
-   * [Creat that dependency will make a infinity loop!]
+   * Equals: If two IPlayableCharacters are the same,
+   *  it does not depend on their equipped weapons.
    */
 
 }

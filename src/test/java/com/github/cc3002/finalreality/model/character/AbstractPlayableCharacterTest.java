@@ -1,28 +1,38 @@
 package com.github.cc3002.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter;
-import com.github.cc3002.finalreality.model.weapon.IWeapon;
-import com.github.cc3002.finalreality.model.weapon.NonEquippableWeapon;
+import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
+import com.github.cc3002.finalreality.model.weapon.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * The template for the testing of the PlayableCharacter's subclasses.
+ * Abstract class containing the common tests
+ *  for all the types of playable characters.
+ *
+ * @author Adrian Arellano.
+ * @see IPlayableCharacter
  */
-public abstract class AbstractPlayableCharacterTest {
+public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTest {
 
-  protected static AbstractPlayableCharacter testCharacter1;
-  protected static AbstractPlayableCharacter testCharacter2;
+  protected static IPlayableCharacter testPlayableCharacter;
   protected static Set<String> equippableWeapons;
 
-  private static Map<String, IWeapon> weaponsSample;
+  private final static Map<String, IWeapon> weaponsSample = new HashMap<>();
 
+  /**
+   * Saves in the variable: {@param equippableWeapons},
+   *  a Set with the name of the type of each kind of
+   *  weapon which can be equipped by this
+   *   IPlayableCharacter's sub-type.
+   */
+  protected abstract void setUpEquippableWeapons();
 
   /**
    * Creates every kind of IWeapon {@param weaponSample}
@@ -33,53 +43,74 @@ public abstract class AbstractPlayableCharacterTest {
    *  for this sub-PlayableCharacterType.
    */
   @BeforeEach
-  public abstract void setUp();
-
-  /**
-   * Test the Constructor of the respective
-   *  Sub-PlayableCharacterType.
-   */
-  @Test
-  public abstract void constructorTest();
-
-  /** Test the equals method. */
-  @Test
-  public void equalsTest() {
-    final var o = new Object();
-    assertNotEquals(testCharacter1, o);
-
-    assertEquals(testCharacter1, testCharacter1);
-    assertNotEquals(testCharacter1, testCharacter2);
+  void setUp() {
+    weaponsSample.put("Axe", new Axe("Battle Axe", 16, 14));
+    new Axe("Great Axe", 22,  19);
+    weaponsSample.put("Bow", new Bow("Ordinary Bow", 10, 15));
+    new Bow("Falcon Bow", 15, 21);
+    weaponsSample.put("Knife", new Knife("Small Knife", 5, 10));
+    new Knife("Large Dagger", 7, 16);
+    weaponsSample.put("Staff", new Staff("Wooden Staff", 6, 28));
+    new Staff("Power Staff", 12, 11);
+    weaponsSample.put("Sword", new Sword("Rapier", 9, 12));
+    new Sword("Saber", 13, 6);
+    /* Initialize a IPlayableCharacter as an ICharacter. */
+    this.setUpCharacter();
+    /* We are testing the IPlayableCharacter sub-classes, so we can do this cast. */
+    testPlayableCharacter = (IPlayableCharacter) testCharacter;
+    /* Creates from 0, a equippableWeapons Set. */
+    equippableWeapons = new HashSet<>();
+    this.setUpEquippableWeapons();
   }
 
-  /* From now on the IWeapons are needed */
 
+  /* From now on the IWeapons are needed */
   /**
    * Test that this Sub-PlayableCharacterType can only equip
    *  the weapons pointed out inside {@param equippableWeapons}.
+   *
+   *    This method should not raise any exceptions.
    */
   @Test
-  public void equipWeaponTest() {
-    BiConsumer<String, IWeapon> weaponTest = new TryEquipWeapons();
-    weaponsSample.forEach(weaponTest);
+  void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
+    for (String weaponType : weaponsSample.keySet()) {
+      IWeapon aWeapon = weaponsSample.get(weaponType);
+
+      if (equippableWeapons.contains(weaponType)) {
+        testPlayableCharacter.equip(aWeapon);
+        assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
+      }
+      else {  /* The exception should occur. */
+        assertThrows(UnsupportedWeapon.class,
+            () -> {
+              testPlayableCharacter.equip(aWeapon);
+            });
+      }
+    }
   }
 
-  /**
-   * Inner class which works as an complement to
-   * compute the {equipWeaponTest} objective.
-   */
-  private static class TryEquipWeapons implements BiConsumer<String, IWeapon> {
-    public void accept(String weaponName, IWeapon aWeapon) {
-      if (equippableWeapons.contains(weaponName)) {
-        testCharacter1.equip(aWeapon);
-        assertEquals(aWeapon, testCharacter1.getEquippedWeapon());
-      }
-      /* Try to equip the weapon and catch the Exception */
-      assertThrows(NonEquippableWeapon.class,
-          () -> {
-            testCharacter1.equip(aWeapon);
-          });
+  @Override
+  protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
+    /* A exception should raise. */
+    assertThrows(NonEquippedWeapon.class,
+        () -> {
+          testCharacter.getWeight();
+        });
+    /* We do this using testPlayableCharacter, because
+     *  ICharacter does not have the equip() method */
+    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
+    testPlayableCharacter.equip(aWeapon);
+    try {
+      assertEquals(aWeapon.getWeight(), testCharacter.getWeight());
+    } catch (NonEquippedWeapon e) {
+      System.err.println(e.getClass().toString());
     }
+  }
+
+  @Override
+  protected void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon {
+    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
+    testPlayableCharacter.equip(aWeapon);
   }
 
 }

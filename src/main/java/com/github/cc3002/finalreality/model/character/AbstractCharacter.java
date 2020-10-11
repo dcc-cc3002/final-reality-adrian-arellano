@@ -9,21 +9,30 @@ import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An abstract class that holds the common behaviour of all the characters in the game.
+ * An abstract class which implements the basic behaviour of a character in the game.
+ *
+ * It's important to highlight that, this is an abstract class,
+ *  so the whole behavior of a character is not here.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Adrian Arellano.
  */
 public abstract class AbstractCharacter implements ICharacter {
 
-  protected final String name;
-  protected final BlockingQueue<ICharacter> turnsQueue;
+  private final String name;
+  private final BlockingQueue<ICharacter> turnsQueue;
   private ScheduledExecutorService scheduledExecutor;
 
+  /**
+   * Initializes some values of a generic character.
+   *
+   * @param name       : the character's name.
+   * @param turnsQueue : the queue of the game in which the character is.
+   */
   protected AbstractCharacter(@NotNull final String name,
-                              @NotNull BlockingQueue<ICharacter> turnsQueue) {
-    this.turnsQueue = turnsQueue;
+                              @NotNull final BlockingQueue<ICharacter> turnsQueue) {
     this.name = name;
+    this.turnsQueue = turnsQueue;
   }
 
   @Override
@@ -31,9 +40,8 @@ public abstract class AbstractCharacter implements ICharacter {
     return name;
   }
 
-  /* If there is no Weapon, the will throw an error. */
   @Override
-  public void waitTurn() {
+  public void waitTurn() throws NonEquippedWeapon {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
     scheduledExecutor.schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
   }
@@ -46,8 +54,19 @@ public abstract class AbstractCharacter implements ICharacter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName());
+    return Objects.hash(name, this.getClass());
   }
+
+  /**
+   * Method created to complete the method {@code equals}
+   *  of each ICharacter's sub-class.
+   *
+   * @param aCharacter : an object which {@code equals}
+   *                   said that is an instance of ICharacter.
+   *
+   * @see #equals(Object o)
+   */
+  protected abstract boolean equalsAuxiliary(@NotNull final ICharacter aCharacter);
 
   @Override
   public boolean equals(final Object o) {
@@ -57,9 +76,9 @@ public abstract class AbstractCharacter implements ICharacter {
     if (!(o instanceof ICharacter)) {
       return false;
     }
-    /* This could be modified in the future. */
     final ICharacter that = (ICharacter) o;
-    return getName().equals(that.getName());
+    return getName().equals(that.getName()) &&
+        this.equalsAuxiliary(that);
   }
 
 }

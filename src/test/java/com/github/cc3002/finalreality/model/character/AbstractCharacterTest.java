@@ -1,69 +1,109 @@
 package com.github.cc3002.finalreality.model.character;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
-import com.github.cc3002.finalreality.model.weapon.AbstractWeapon;
-import com.github.cc3002.finalreality.model.weapon.WeaponType;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * Abstract class containing the common tests for all the types of characters.
+ * Abstract class containing the common tests
+ *  for all the types of characters.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Adrian Arellano.
  * @see ICharacter
  */
 public abstract class AbstractCharacterTest {
 
   protected BlockingQueue<ICharacter> turns;
-  protected List<ICharacter> testCharacters;
-  protected AbstractWeapon testWeapon;
+  protected ICharacter testCharacter;
+
+  /**
+   * Initialize the {@code testCharacter} which is been tested.
+   */
+  protected abstract void setUpCharacter();
+
+  /**
+   * Initialize every variable to run properly
+   *  the test suite of this class.
+   */
+  @BeforeEach
+  void setUp() {
+    turns = new LinkedBlockingQueue<>();
+    this.setUpCharacter();
+  }
+
+  /**
+   * Test if {@code getWeight()} works properly,
+   *  it could throws an exception.
+   */
+  @Test
+  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon;
+
+  /**
+   * Let the {@code testCharacter} ready to use the {@code waitTurn()},
+   *  without the possibility of failing.
+   */
+  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon;
 
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
    */
   @Test
-  void waitTurnTest() {
-    Assertions.assertTrue(turns.isEmpty());
-    tryToEquip(testCharacters.get(0));
-    testCharacters.get(0).waitTurn();
+  void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
+    assertTrue(turns.isEmpty());
+
+    this.getReadyToWaitTurn();
+    /* getWeight() and waitTurn() should not to throw an exception. */
+    final int expectedWaitingTime = testCharacter.getWeight() * 100;  // divided by 10
+    testCharacter.waitTurn();
+
     try {
       // Thread.sleep is not accurate so this values may be changed to adjust the
       // acceptable error margin.
       // We're testing that the character waits approximately 1 second.
-      Thread.sleep(900);
+      Thread.sleep(9 * expectedWaitingTime);
       Assertions.assertEquals(0, turns.size());
-      Thread.sleep(200);
-      Assertions.assertEquals(1, turns.size());
-      Assertions.assertEquals(testCharacters.get(0), turns.peek());
+      Thread.sleep(2 * expectedWaitingTime);
+      assertEquals(1, turns.size());
+      assertEquals(testCharacter, turns.peek());
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
   }
 
-  private void tryToEquip(ICharacter character) {
-    character.equip(testWeapon);
-  }
-
+  /**
+   * Auxiliary method created to test the constructor
+   *  of all the classes which implement an ICharacter.
+   *
+   * All the parameters explain their functionalities by themself.
+   */
   protected void checkConstruction(final ICharacter expectedCharacter,
-      final ICharacter testEqualCharacter,
       final ICharacter sameClassDifferentCharacter,
       final ICharacter differentClassCharacter) {
-    assertEquals(expectedCharacter, testEqualCharacter);
-    assertNotEquals(sameClassDifferentCharacter, testEqualCharacter);
-    assertNotEquals(testEqualCharacter, differentClassCharacter);
-    assertEquals(expectedCharacter.hashCode(), testEqualCharacter.hashCode());
+    assertEquals(expectedCharacter, testCharacter);
+    /* equals */
+    final var o = new Object();
+    assertNotEquals(o, testCharacter);
+    assertNotEquals(sameClassDifferentCharacter, testCharacter);
+    assertNotEquals(differentClassCharacter, testCharacter);
+    /* hashCode */
+    assertEquals(expectedCharacter.hashCode(), testCharacter.hashCode());
   }
 
-  protected void basicSetUp() {
-    turns = new LinkedBlockingQueue<>();
-    testWeapon = new AbstractWeapon("Test", 15, 10, WeaponType.AXE);
-    testCharacters = new ArrayList<>();
-  }
+  /**
+   * Test the constructor, the {@code equals()} and the {@code hashCode()} methods
+   *  of the sub-class of ICharacter, where it's implemented.
+   *
+   * @see #checkConstruction(ICharacter, ICharacter, ICharacter)
+   */
+  @Test
+  protected abstract void constructorTest();
+
 }
