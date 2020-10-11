@@ -1,18 +1,20 @@
 package com.github.cc3002;
 
-import com.github.cc3002.finalreality.model.character.ICharacter;
+/* import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.character.playable.CharacterClass;
 import com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter;
 import com.github.cc3002.finalreality.model.weapon.AbstractWeapon;
 import com.github.cc3002.finalreality.model.weapon.WeaponType;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue; */
 
 /**
+ * I have not repair this script.
  * @author Ignacio Slater Muñoz.
+ * @author Adrian Arellano
  */
-public class TimerExample {
+/*public class TimerExample {
 
   public static void main(String[] args) throws InterruptedException {
     BlockingQueue<ICharacter> queue = new LinkedBlockingQueue<>();
@@ -33,4 +35,4 @@ public class TimerExample {
       System.out.println(queue.poll().getName());
     }
   }
-}
+}*/

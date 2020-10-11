@@ -5,6 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,9 +85,11 @@ public abstract class AbstractCharacterTest {
    *
    * All the parameters explain their functionalities by themself.
    */
-  protected void checkConstruction(final ICharacter expectedCharacter,
-      final ICharacter sameClassDifferentCharacter,
-      final ICharacter differentClassCharacter) {
+  protected void checkConstruction(
+      @NotNull final ICharacter expectedCharacter,
+      @NotNull final ICharacter sameClassDifferentCharacter,
+      @NotNull final ICharacter differentClassCharacter
+  ) {
     assertEquals(expectedCharacter, testCharacter);
     /* equals */
     final var o = new Object();
