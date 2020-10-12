@@ -1,6 +1,10 @@
 package com.github.cc3002.finalreality.model.character;
 
 import com.github.cc3002.finalreality.model.character.playable.Thief;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,7 +25,20 @@ class EnemyTest extends AbstractCharacterTest {
     testCharacter = new Enemy(ENEMY_NAME, ENEMY_WEIGHT, turns);
   }
 
-  @Override
+  @Override @BeforeEach
+  void setUp() {
+    super.setUp();
+  }
+
+  @Override @Test
+  protected void constructorTest() {
+    checkConstruction(
+        new Enemy(ENEMY_NAME, ENEMY_WEIGHT, turns),
+        new Enemy(ENEMY_NAME, 11, turns),
+        new Thief(ENEMY_NAME, turns));
+  }
+
+  @Override @Test
   protected void getWeightTest() throws NonEquippedWeapon {
     assertEquals(ENEMY_WEIGHT, testCharacter.getWeight());
   }
@@ -31,12 +48,9 @@ class EnemyTest extends AbstractCharacterTest {
     /* After the initialization, an enemy is ready to use getWight */
   }
 
-  @Override
-  protected void constructorTest() {
-    checkConstruction(
-        new Enemy(ENEMY_NAME, ENEMY_WEIGHT, turns),
-        new Enemy(ENEMY_NAME, 11, turns),
-        new Thief(ENEMY_NAME, turns));
+  @Override @Test
+  protected void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
+    super.waitTurnTest();
   }
 
 }

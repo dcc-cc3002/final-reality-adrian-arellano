@@ -7,8 +7,6 @@ import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,50 +31,10 @@ public abstract class AbstractCharacterTest {
   /**
    * Initialize every variable to run properly
    *  the test suite of this class.
-   */
-  @BeforeEach
+   *//* @BeforeEach */
   void setUp() {
     turns = new LinkedBlockingQueue<>();
     this.setUpCharacter();
-  }
-
-  /**
-   * Test if {@code getWeight()} works properly,
-   *  it could throws an exception.
-   */
-  @Test
-  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon;
-
-  /**
-   * Let the {@code testCharacter} ready to use the {@code waitTurn()},
-   *  without the possibility of failing.
-   */
-  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon;
-
-  /**
-   * Checks that the character waits the appropriate amount of time for it's turn.
-   */
-  @Test
-  void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
-    assertTrue(turns.isEmpty());
-
-    this.getReadyToWaitTurn();
-    /* getWeight() and waitTurn() should not to throw an exception. */
-    final int expectedWaitingTime = testCharacter.getWeight() * 100;  // divided by 10
-    testCharacter.waitTurn();
-
-    try {
-      // Thread.sleep is not accurate so this values may be changed to adjust the
-      // acceptable error margin.
-      // We're testing that the character waits approximately 1 second.
-      Thread.sleep(9 * expectedWaitingTime);
-      Assertions.assertEquals(0, turns.size());
-      Thread.sleep(2 * expectedWaitingTime);
-      assertEquals(1, turns.size());
-      assertEquals(testCharacter, turns.peek());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
   }
 
   /**
@@ -105,8 +63,44 @@ public abstract class AbstractCharacterTest {
    *  of the sub-class of ICharacter, where it's implemented.
    *
    * @see #checkConstruction(ICharacter, ICharacter, ICharacter)
-   */
-  @Test
+   *//* @Test */
   protected abstract void constructorTest();
+
+  /**
+   * Test if {@code getWeight()} works properly,
+   *  it could throws an exception.
+   *//* @Test */
+  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon;
+
+  /**
+   * Let the {@code testCharacter} ready to use the {@code waitTurn()},
+   *  without the possibility of failing.
+   */
+  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon;
+
+  /**
+   * Checks that the character waits the appropriate amount of time for it's turn.
+   *//* @Test */
+  protected void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
+    assertTrue(turns.isEmpty());
+
+    this.getReadyToWaitTurn();
+    /* getWeight() and waitTurn() should not to throw an exception. */
+    final int expectedWaitingTime = testCharacter.getWeight() * 100;  // divided by 10
+    testCharacter.waitTurn();
+
+    try {
+      // Thread.sleep is not accurate so this values may be changed to adjust the
+      // acceptable error margin.
+      // We're testing that the character waits approximately 1 second.
+      Thread.sleep(9 * expectedWaitingTime);
+      Assertions.assertEquals(0, turns.size());
+      Thread.sleep(2 * expectedWaitingTime);
+      assertEquals(1, turns.size());
+      assertEquals(testCharacter, turns.peek());
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
