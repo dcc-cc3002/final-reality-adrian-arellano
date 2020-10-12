@@ -41,9 +41,9 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
    * Also initializes the {@param equippableWeapons} which
    *  has a String with the name of each equippable weapon
    *  for this sub-PlayableCharacterType.
-   */
-  @BeforeEach
-  void setUp() {
+   */ @BeforeEach
+  protected void setUp() {
+    super.setUp();
     weaponsSample.put("Axe", new Axe("Battle Axe", 16, 14));
     new Axe("Great Axe", 22,  19);
     weaponsSample.put("Bow", new Bow("Ordinary Bow", 10, 15));
@@ -63,39 +63,11 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
     this.setUpEquippableWeapons();
   }
 
-
-  /* From now on the IWeapons are needed */
-  /**
-   * Test that this Sub-PlayableCharacterType can only equip
-   *  the weapons pointed out inside {@param equippableWeapons}.
-   *
-   *    This method should not raise any exceptions.
-   */
-  @Test
-  void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
-    for (String weaponType : weaponsSample.keySet()) {
-      IWeapon aWeapon = weaponsSample.get(weaponType);
-
-      if (equippableWeapons.contains(weaponType)) {
-        testPlayableCharacter.equip(aWeapon);
-        assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
-      }
-      else {  /* The exception should occur. */
-        assertThrows(UnsupportedWeapon.class,
-            () -> {
-              testPlayableCharacter.equip(aWeapon);
-            });
-      }
-    }
-  }
-
-  @Override
+  @Override @Test
   protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
     /* A exception should raise. */
     assertThrows(NonEquippedWeapon.class,
-        () -> {
-          testCharacter.getWeight();
-        });
+        () -> testCharacter.getWeight());
     /* We do this using testPlayableCharacter, because
      *  ICharacter does not have the equip() method */
     final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
@@ -111,6 +83,29 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   protected void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon {
     final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
     testPlayableCharacter.equip(aWeapon);
+  }
+
+  /* From now on the IWeapons are needed */
+
+  /**
+   * Test that this Sub-PlayableCharacterType can only equip
+   *  the weapons pointed out inside {@param equippableWeapons}.
+   *
+   *    This method should not raise any exceptions.
+   */ @Test
+  protected void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
+    for (String weaponType : weaponsSample.keySet()) {
+      IWeapon aWeapon = weaponsSample.get(weaponType);
+
+      if (equippableWeapons.contains(weaponType)) {
+        testPlayableCharacter.equip(aWeapon);
+        assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
+      }
+      else {  /* The exception should occur. */
+        assertThrows(UnsupportedWeapon.class,
+            () -> testPlayableCharacter.equip(aWeapon));
+      }
+    }
   }
 
 }

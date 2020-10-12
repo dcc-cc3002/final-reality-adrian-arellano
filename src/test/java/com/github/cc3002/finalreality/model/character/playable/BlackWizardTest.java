@@ -1,6 +1,8 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.AbstractPlayableCharacterTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Class which initialize the parameters of a black wizard
@@ -14,17 +16,22 @@ class BlackWizardTest extends AbstractPlayableCharacterTest {
   private static final String BLACK_WIZARD_NAME = "Vivi";
 
   @Override
-  protected void setUpEquippableWeapons() {
-    equippableWeapons.add("Knife");
-    equippableWeapons.add("Staff");
-  }
-
-  @Override
   protected void setUpCharacter() {
     testCharacter = new BlackWizard(BLACK_WIZARD_NAME, turns);
   }
 
   @Override
+  protected void setUpEquippableWeapons() {
+    equippableWeapons.add("Knife");
+    equippableWeapons.add("Staff");
+  }
+
+  @Override @BeforeEach
+  protected void setUp() {
+    super.setUp();
+  }
+
+  @Override @Test
   protected void constructorTest() {
     checkConstruction(
         new BlackWizard(BLACK_WIZARD_NAME, turns),

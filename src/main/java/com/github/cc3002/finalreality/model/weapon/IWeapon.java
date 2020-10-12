@@ -26,23 +26,7 @@ public interface IWeapon {
   IPlayableCharacter getCurrentCarrier();
 
 
-    /* Double Dispatch of "equip" */
-
-  /**
-   * Used in the double dispatch of
-   *  {@code IPlayableCharacter.equip(IWeapon aWeapon)}
-   *  to let the IPlayableCharacter knows this IWeapon sub-Type.
-   */
-  void tryingToBeEquippedBy(@NotNull final IPlayableCharacter aPlayableCharacter) throws UnsupportedWeapon, NonAvailableWeapon;
-
-    /* Setters use in that Double Dispatch. */
-
-  /**
-   * Checks if this weapon has a carrier:
-   *  throws an {@exception NonAvailableWeapon} if it has
-   *  sets the {@param aPlayableCharacter} as the carrier if not.
-   */
-  void equippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon;
+  /* Setters use in that Double Dispatch. */
 
   /**
    * Sets the currentCarrier of this weapon as null.
@@ -50,5 +34,23 @@ public interface IWeapon {
    *  actually is the currentCarrier of the Weapon.
    */
   void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier);
+
+
+    /* Double Dispatch of "equip" */
+
+  /** Let this weapon knows that an Engineer is trying to take it. */
+  void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon;
+
+  /** Let this weapon knows that a Knight is trying to take it. */
+  void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon;
+
+  /** Let this weapon knows that a Thief is trying to take it. */
+  void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon;
+
+  /** Let this weapon knows that a Black Wizard is trying to take it. */
+  void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon;
+
+  /** Let this weapon knows that a White Wizard is trying to take it. */
+  void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon;
 
 }

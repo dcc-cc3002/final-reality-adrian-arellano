@@ -1,6 +1,7 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
+import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
+import com.github.cc3002.finalreality.model.character.playable.WhiteWizard;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,13 +24,18 @@ public class Staff extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Staff;
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon {
+    super.availableToBeEquippedBy(aBlackWizard);
   }
 
   @Override
-  public void tryingToBeEquippedBy(@NotNull final IPlayableCharacter aPlayableCharacter) throws UnsupportedWeapon, NonAvailableWeapon {
-    aPlayableCharacter.equipAStaff(this);
+  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws NonAvailableWeapon {
+    super.availableToBeEquippedBy(aWhiteWizard);
+  }
+
+  @Override
+  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
+    return aWeapon instanceof Staff;
   }
 
 }

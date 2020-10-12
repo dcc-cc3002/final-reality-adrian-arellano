@@ -26,18 +26,11 @@ public interface IPlayableCharacter extends ICharacter {
 
     /* Double Dispatch of "equip" */
 
-  /** Indicates that the Weapon which is trying to be equip, is a Axe. */
-  void equipAnAxe(@NotNull final Axe anAxe) throws UnsupportedWeapon, NonAvailableWeapon;
+  /**
+   * If this character has an {@param equippedWeapon}, the unEquips it
+   *  and, no matter what, sets {@param aWeapon} as the new equipped
+   *  weapon of this playable character.
+   */
+  void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon;
 
-  /** Indicates that the Weapon which is trying to be equip, is a Bow. */
-  void equipABow(@NotNull final Bow aBow) throws UnsupportedWeapon, NonAvailableWeapon;
-
-  /** Indicates that the Weapon which is trying to be equip, is a Knife. */
-  void equipAKnife(@NotNull final Knife aKnife) throws UnsupportedWeapon, NonAvailableWeapon;
-
-  /** Indicates that the Weapon which is trying to be equip, is a Staff. */
-  void equipAStaff(@NotNull final Staff aStaff) throws UnsupportedWeapon, NonAvailableWeapon;
-
-  /** Indicates that the Weapon which is trying to be equip, is a Sword. */
-  void equipASword(@NotNull final Sword aSword) throws UnsupportedWeapon, NonAvailableWeapon;
 }

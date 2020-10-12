@@ -43,7 +43,7 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public void waitTurn() throws NonEquippedWeapon {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    scheduledExecutor.schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
+    scheduledExecutor.schedule(this::addToQueue, this.getWeight() * 100, TimeUnit.MILLISECONDS);
   }
 
   /** Adds this character to the turns queue. */

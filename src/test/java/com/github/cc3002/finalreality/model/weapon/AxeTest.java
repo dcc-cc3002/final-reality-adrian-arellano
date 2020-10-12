@@ -2,6 +2,8 @@ package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.playable.Engineer;
 import com.github.cc3002.finalreality.model.character.playable.Knight;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Class which initialize the parameters of an Axe
@@ -16,7 +18,7 @@ class AxeTest extends AbstractWeaponTest {
   private static final int DAMAGE = 16;
   private static final int WEIGHT = 14;
 
-  @Override
+  @Override @BeforeEach
   protected void setUp() {
     testWeapon1 = new Axe(AXE_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Axe("Great Axe", 22,  19);
@@ -25,7 +27,7 @@ class AxeTest extends AbstractWeaponTest {
     sampleCharacter2 = new Engineer("Cid", turns);
   }
 
-  @Override
+  @Override @Test
   protected void constructorTest() {
     checkConstruction(
         new Axe(AXE_NAME, DAMAGE, WEIGHT),
@@ -33,7 +35,7 @@ class AxeTest extends AbstractWeaponTest {
     );
   }
 
-  @Override
+  @Override @Test
   protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
     checkHolder(new Axe(AXE_NAME, DAMAGE, WEIGHT));
   }

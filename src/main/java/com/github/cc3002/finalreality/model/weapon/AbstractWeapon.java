@@ -56,18 +56,60 @@ public abstract class AbstractWeapon implements IWeapon {
   }
 
   @Override
-  public void equippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon {
+  public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) {
+    if (supposedCarrier.equals(currentCarrier)) {
+      this.currentCarrier = null;
+    }
+  }
+
+  /**
+   * Method created to be used only by the subclasses of this class.
+   * Throws an {@exception  NonAvailableWeapon} if this weapon has a
+   *  carrier, and if not, sets the {@param newCarrier} as the current
+   *  carrier of this weapon, and after that, calls the carrier to
+   *  actually equip this Weapon.
+   */
+  protected void availableToBeEquippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon {
     if (this.currentCarrier != null) {
-      /* The weapon has a carrier, a weapon can not be carried by to characters a time. */
+      /* The weapon has a carrier, a weapon can not be carried by two characters a time. */
       throw new NonAvailableWeapon();
     }
     this.currentCarrier = newCarrier;
+    newCarrier.actuallyEquip(this);
+  }
+
+  /**
+   * Created to throw a {@exception UnsupportedWeapon}
+   *  when a IPlayableCharacter's Sub-Type
+   *  does not support this WeaponType.
+   */
+  private void error() throws UnsupportedWeapon {
+    throw new UnsupportedWeapon();
   }
 
   @Override
-  public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) {
-    if (supposedCarrier.equals(currentCarrier))
-     this.currentCarrier = null;
+  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
+  }
+
+  @Override
+  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon {
+    error();
   }
 
   @Override

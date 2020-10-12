@@ -2,6 +2,8 @@ package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
 import com.github.cc3002.finalreality.model.character.playable.WhiteWizard;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Class which initialize the parameters of a Staff
@@ -16,7 +18,7 @@ class StaffTest extends AbstractWeaponTest {
   private static final int DAMAGE = 6;
   private static final int WEIGHT = 28;
 
-  @Override
+  @Override @BeforeEach
   protected void setUp() {
     testWeapon1 = new Staff(STAFF_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Staff("Power Staff", 12, 11);
@@ -25,7 +27,7 @@ class StaffTest extends AbstractWeaponTest {
     sampleCharacter2 = new WhiteWizard("Eiko", turns);
   }
 
-  @Override
+  @Override @Test
   protected void constructorTest() {
     checkConstruction(
         new Staff(STAFF_NAME, DAMAGE, WEIGHT),
@@ -33,7 +35,7 @@ class StaffTest extends AbstractWeaponTest {
     );
   }
 
-  @Override
+  @Override @Test
   protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
     checkHolder(new Staff(STAFF_NAME, DAMAGE, WEIGHT));
   }

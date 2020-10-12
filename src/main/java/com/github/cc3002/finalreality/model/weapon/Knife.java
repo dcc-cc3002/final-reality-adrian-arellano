@@ -1,6 +1,8 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
+import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
+import com.github.cc3002.finalreality.model.character.playable.Knight;
+import com.github.cc3002.finalreality.model.character.playable.Thief;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,13 +25,23 @@ public class Knife extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Knife;
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon {
+    super.availableToBeEquippedBy(aKnight);
   }
 
   @Override
-  public void tryingToBeEquippedBy(@NotNull final IPlayableCharacter aPlayableCharacter) throws UnsupportedWeapon, NonAvailableWeapon {
-    aPlayableCharacter.equipAKnife(this);
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon {
+    super.availableToBeEquippedBy(aThief);
+  }
+
+  @Override
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon {
+    super.availableToBeEquippedBy(aBlackWizard);
+  }
+
+  @Override
+  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
+    return aWeapon instanceof Knife;
   }
 
 }

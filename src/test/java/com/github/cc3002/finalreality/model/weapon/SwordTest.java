@@ -2,6 +2,8 @@ package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.playable.Knight;
 import com.github.cc3002.finalreality.model.character.playable.Thief;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Class which initialize the parameters of a Sword
@@ -16,7 +18,7 @@ class SwordTest extends AbstractWeaponTest {
   private static final int DAMAGE = 9;
   private static final int WEIGHT = 12;
 
-  @Override
+  @Override @BeforeEach
   protected void setUp() {
     testWeapon1 = new Sword(SWORD_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Sword("Saber", 13, 6);
@@ -25,7 +27,7 @@ class SwordTest extends AbstractWeaponTest {
     sampleCharacter2 = new Thief("Zidane", turns);
   }
 
-  @Override
+  @Override @Test
   protected void constructorTest() {
     checkConstruction(
         new Sword(SWORD_NAME, DAMAGE, WEIGHT),
@@ -33,7 +35,7 @@ class SwordTest extends AbstractWeaponTest {
     );
   }
 
-  @Override
+  @Override @Test
   protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
     checkHolder(new Sword(SWORD_NAME, DAMAGE, WEIGHT));
   }
