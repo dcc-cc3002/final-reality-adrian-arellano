@@ -47,8 +47,11 @@ and Bows (Knives instead of Staffs).
 
 The current working functionalities are:
 > Initialize any object of the described above.
+
 > Get their attributes, like name for both, weight of weapons, damage, etc.
+
 > Add any character to a turn's queue, and get the next turn owner.
+
 > Equip a weapon to a playable character (the process gets done only if the weapon is not
 in the hands of another character, and the weapon can be equipped by that kind of character).
 
