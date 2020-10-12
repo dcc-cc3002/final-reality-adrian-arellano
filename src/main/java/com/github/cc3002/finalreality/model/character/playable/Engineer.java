@@ -1,7 +1,9 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
-import com.github.cc3002.finalreality.model.weapon.*;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
@@ -25,13 +27,8 @@ public class Engineer extends AbstractPlayableCharacter {
   }
 
   @Override
-  public void equipAnAxe(@NotNull final Axe anAxe) throws NonAvailableWeapon {
-    super.actuallyEquip(anAxe);
-  }
-
-  @Override
-  public void equipABow(@NotNull final Bow aBow) throws NonAvailableWeapon {
-    super.actuallyEquip(aBow);
+  protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+    aWeapon.equippedByAnEngineer(this);
   }
 
   @Override

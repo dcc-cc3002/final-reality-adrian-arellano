@@ -21,7 +21,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractPlayableCharacter extends AbstractCharacter implements IPlayableCharacter {
 
-  protected IWeapon equippedWeapon = null;
+  /* This variable could be null */
+  protected IWeapon equippedWeapon;
 
   /**
    * Initializes some values of a generic playable character.
@@ -47,60 +48,29 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
     return equippedWeapon;
   }
 
+  /**
+   * Method created to be overridden by the sub-classes of this
+   *  abstract class.
+   * The objective of this method, is let the weapon know the
+   *  class of playable character who is trying to equip it.
+   */
+  protected abstract void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon;
+
   @Override
   public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
     if (aWeapon.equals(this.equippedWeapon)) {
       /* Nothing to do, the weapon is already equipped. */
       return;
     }
-    aWeapon.tryingToBeEquippedBy(this);
+    this.equipAuxiliary(aWeapon);
   }
 
-  /**
-   * Created to be called, only by its own sub-classes.
-   * Tries to equip the {@param aWeapon}, if that doesn't throw a error, 
-   * then unEquips the {@param equippedWeapon} and sets {@param aWeapon}
-   * as the current equipped weapon of this PlayableCharacter.
-   */
-  protected void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon {
-    aWeapon.equippedBy(this);
-
-    equippedWeapon.unEquippedBy(this);
+  @Override
+  public void actuallyEquip(@NotNull final IWeapon aWeapon) {
+    if (equippedWeapon != null) {
+      equippedWeapon.unEquippedBy(this);
+    }
     this.equippedWeapon = aWeapon;
-  }
-
-  /**
-   * Created to throw a {@exception UnsupportedWeapon}
-   *  when a WeaponType is unsupported by a
-   *  IPlayableCharacter's Sub-Type.
-   */
-  private void error() throws UnsupportedWeapon {
-    throw new UnsupportedWeapon();
-  }
-
-  @Override
-  public void equipAnAxe(@NotNull final Axe anAxe) throws UnsupportedWeapon, NonAvailableWeapon {
-    error();
-  }
-
-  @Override
-  public void equipABow(@NotNull final Bow aBow) throws UnsupportedWeapon, NonAvailableWeapon {
-    error();
-  }
-
-  @Override
-  public void equipAKnife(@NotNull final Knife aKnife) throws UnsupportedWeapon, NonAvailableWeapon {
-    error();
-  }
-
-  @Override
-  public void equipAStaff(@NotNull final Staff aStaff) throws UnsupportedWeapon, NonAvailableWeapon {
-    error();
-  }
-
-  @Override
-  public void equipASword(@NotNull final Sword aSword) throws UnsupportedWeapon, NonAvailableWeapon {
-    error();
   }
 
   /*

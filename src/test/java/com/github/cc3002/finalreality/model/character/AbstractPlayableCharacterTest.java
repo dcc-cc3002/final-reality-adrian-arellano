@@ -2,6 +2,8 @@ package com.github.cc3002.finalreality.model.character;
 
 import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
 import com.github.cc3002.finalreality.model.weapon.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +41,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
    * Also initializes the {@param equippableWeapons} which
    *  has a String with the name of each equippable weapon
    *  for this sub-PlayableCharacterType.
-   *//* @BeforeEach */
+   */ @BeforeEach
   protected void setUp() {
     super.setUp();
     weaponsSample.put("Axe", new Axe("Battle Axe", 16, 14));
@@ -61,13 +63,11 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
     this.setUpEquippableWeapons();
   }
 
-  @Override /* @Test */
+  @Override @Test
   protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
     /* A exception should raise. */
     assertThrows(NonEquippedWeapon.class,
-        () -> {
-          testCharacter.getWeight();
-        });
+        () -> testCharacter.getWeight());
     /* We do this using testPlayableCharacter, because
      *  ICharacter does not have the equip() method */
     final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
@@ -92,7 +92,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
    *  the weapons pointed out inside {@param equippableWeapons}.
    *
    *    This method should not raise any exceptions.
-   *//* @Test */
+   */ @Test
   protected void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
     for (String weaponType : weaponsSample.keySet()) {
       IWeapon aWeapon = weaponsSample.get(weaponType);
@@ -103,9 +103,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
       }
       else {  /* The exception should occur. */
         assertThrows(UnsupportedWeapon.class,
-            () -> {
-              testPlayableCharacter.equip(aWeapon);
-            });
+            () -> testPlayableCharacter.equip(aWeapon));
       }
     }
   }

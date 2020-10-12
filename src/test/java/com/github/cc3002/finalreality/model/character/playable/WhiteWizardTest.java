@@ -2,9 +2,6 @@ package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.AbstractPlayableCharacterTest;
 import com.github.cc3002.finalreality.model.character.Enemy;
-import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
-import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
-import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,21 +38,6 @@ class WhiteWizardTest extends AbstractPlayableCharacterTest {
         new WhiteWizard("Different White Wizard", turns),
         new Enemy(WHITE_WIZARD_NAME, 10, turns)
     );
-  }
-
-  @Override @Test
-  protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
-    super.getWeightTest();
-  }
-
-  @Override @Test
-  protected void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
-    super.waitTurnTest();
-  }
-
-  @Override @Test
-  protected void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
-    super.equipWeaponTest();
   }
 
 }

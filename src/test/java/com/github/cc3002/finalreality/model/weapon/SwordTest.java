@@ -40,9 +40,4 @@ class SwordTest extends AbstractWeaponTest {
     checkHolder(new Sword(SWORD_NAME, DAMAGE, WEIGHT));
   }
 
-  @Override @Test
-  protected void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon {
-    super.oneCarrierTest();
-  }
-
 }

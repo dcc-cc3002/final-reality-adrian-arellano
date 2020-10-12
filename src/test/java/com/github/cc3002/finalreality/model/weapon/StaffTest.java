@@ -40,9 +40,4 @@ class StaffTest extends AbstractWeaponTest {
     checkHolder(new Staff(STAFF_NAME, DAMAGE, WEIGHT));
   }
 
-  @Override @Test
-  protected void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon {
-    super.oneCarrierTest();
-  }
-
 }

@@ -3,6 +3,8 @@ package com.github.cc3002.finalreality.model.weapon;
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -30,7 +32,7 @@ public abstract class AbstractWeaponTest {
   /**
    * Creates two IWeapon's and two ICharacter's,
    *  which can equip those Sub-WeaponType.
-   *//* @BeforeEach */
+   */ @BeforeEach
   protected abstract void setUp();
 
   /**
@@ -56,7 +58,7 @@ public abstract class AbstractWeaponTest {
   /**
    * Test the Constructor of the respective
    *  Sub-WeaponType.
-   *//* @Test */
+   */ @Test
   protected abstract void constructorTest();
 
 
@@ -82,13 +84,13 @@ public abstract class AbstractWeaponTest {
    * Test the concept that if two weapons looks the same,
    *  but they are held by different Character's, then they
    *  are not the same weapon.
-   *//* @Test */
+   */ @Test
   protected abstract void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon;
 
   /**
    * Test the concept that a weapon
    *  can be held by only one Character a time.
-   *//* @Test */
+   */ @Test
   protected void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon {
     sampleCharacter1.equip(testWeapon1);
     assertEquals(testWeapon1, sampleCharacter1.getEquippedWeapon());
@@ -98,9 +100,7 @@ public abstract class AbstractWeaponTest {
 
     /* A weapon can be held by only one Character a time */
     assertThrows(NonAvailableWeapon.class,
-        () -> {
-          sampleCharacter2.equip(testWeapon1);
-        });
+        () -> sampleCharacter2.equip(testWeapon1));
 
     assertEquals(testWeapon1, sampleCharacter1.getEquippedWeapon());
     sampleCharacter1.equip(testWeapon2);

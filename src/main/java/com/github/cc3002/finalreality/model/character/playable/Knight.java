@@ -1,7 +1,9 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
-import com.github.cc3002.finalreality.model.weapon.*;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
@@ -25,18 +27,8 @@ public class Knight extends AbstractPlayableCharacter {
   }
 
   @Override
-  public void equipAnAxe(@NotNull final Axe anAxe) throws NonAvailableWeapon {
-    super.actuallyEquip(anAxe);
-  }
-
-  @Override
-  public void equipAKnife(@NotNull final Knife aKnife) throws NonAvailableWeapon {
-    super.actuallyEquip(aKnife);
-  }
-
-  @Override
-  public void equipASword(@NotNull final Sword aSword) throws NonAvailableWeapon {
-    super.actuallyEquip(aSword);
+  protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+    aWeapon.equippedByAKnight(this);
   }
 
   @Override

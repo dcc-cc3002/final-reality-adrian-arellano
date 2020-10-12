@@ -1,8 +1,9 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
-import com.github.cc3002.finalreality.model.weapon.Staff;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
@@ -26,8 +27,8 @@ public class WhiteWizard extends AbstractPlayableCharacter {
   }
 
   @Override
-  public void equipAStaff(@NotNull final Staff aStaff) throws NonAvailableWeapon {
-    super.actuallyEquip(aStaff);
+  protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+    aWeapon.equippedByAWhiteWizard(this);
   }
 
   @Override
