@@ -25,17 +25,17 @@ public class Knife extends AbstractWeapon {
   }
 
   @Override
-  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon {
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aKnight);
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon {
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aThief);
   }
 
   @Override
-  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon {
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aBlackWizard);
   }
 

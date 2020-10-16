@@ -24,7 +24,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   protected static IPlayableCharacter testPlayableCharacter;
   protected static Set<String> equippableWeapons;
 
-  private final static Map<String, IWeapon> weaponsSample = new HashMap<>();
+  private static final Map<String, IWeapon> weaponsSample = new HashMap<>();
 
   /**
    * Saves in the variable: {@param equippableWeapons},
@@ -64,7 +64,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   }
 
   @Override @Test
-  protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     /* A exception should raise. */
     assertThrows(NonEquippedWeapon.class,
         () -> testCharacter.getWeight());
@@ -80,7 +80,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   }
 
   @Override
-  protected void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
     testPlayableCharacter.equip(aWeapon);
   }
@@ -93,7 +93,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
    *
    *    This method should not raise any exceptions.
    */ @Test
-  protected void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
+  void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     for (String weaponType : weaponsSample.keySet()) {
       IWeapon aWeapon = weaponsSample.get(weaponType);
 

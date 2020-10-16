@@ -4,6 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,14 +50,14 @@ public abstract class AbstractCharacterTest {
       @NotNull final ICharacter sameClassDifferentCharacter,
       @NotNull final ICharacter differentClassCharacter
   ) {
-    assertEquals(expectedCharacter, testCharacter);
+    assertEquals(testCharacter, expectedCharacter);
     /* equals */
     final var o = new Object();
-    assertNotEquals(o, testCharacter);
-    assertNotEquals(sameClassDifferentCharacter, testCharacter);
-    assertNotEquals(differentClassCharacter, testCharacter);
+    assertNotEquals(testCharacter, o);
+    assertNotEquals(testCharacter, sameClassDifferentCharacter);
+    assertNotEquals(testCharacter, differentClassCharacter);
     /* hashCode */
-    assertEquals(expectedCharacter.hashCode(), testCharacter.hashCode());
+    assertEquals(testCharacter.hashCode(), expectedCharacter.hashCode());
   }
 
   /**
@@ -71,18 +72,18 @@ public abstract class AbstractCharacterTest {
    * Test if {@code getWeight()} works properly,
    *  it could throws an exception.
    */ @Test
-  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon;
+  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
 
   /**
    * Let the {@code testCharacter} ready to use the {@code waitTurn()},
    *  without the possibility of failing.
    */
-  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon;
+  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
 
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
    */ @Test
-  protected void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon {
+  void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     assertTrue(turns.isEmpty());
 
     this.getReadyToWaitTurn();

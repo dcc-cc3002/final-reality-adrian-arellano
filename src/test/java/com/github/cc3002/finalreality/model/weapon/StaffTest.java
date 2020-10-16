@@ -36,7 +36,7 @@ class StaffTest extends AbstractWeaponTest {
   }
 
   @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     checkHolder(new Staff(STAFF_NAME, DAMAGE, WEIGHT));
   }
 

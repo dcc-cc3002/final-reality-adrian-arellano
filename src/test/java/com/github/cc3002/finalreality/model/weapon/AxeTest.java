@@ -36,7 +36,7 @@ class AxeTest extends AbstractWeaponTest {
   }
 
   @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     checkHolder(new Axe(AXE_NAME, DAMAGE, WEIGHT));
   }
 

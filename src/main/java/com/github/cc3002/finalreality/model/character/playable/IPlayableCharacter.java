@@ -21,7 +21,7 @@ public interface IPlayableCharacter extends ICharacter {
   /* Setters */
 
   /** Equips a weapon to the PlayableCharacter. */
-  void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
 
     /* Double Dispatch of "equip" */
@@ -31,6 +31,6 @@ public interface IPlayableCharacter extends ICharacter {
    *  and, no matter what, sets {@param aWeapon} as the new equipped
    *  weapon of this playable character.
    */
-  void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon;
+  void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon, UnexpectedBehavior;
 
 }

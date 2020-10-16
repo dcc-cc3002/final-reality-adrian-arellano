@@ -24,12 +24,12 @@ public class Staff extends AbstractWeapon {
   }
 
   @Override
-  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon {
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aBlackWizard);
   }
 
   @Override
-  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws NonAvailableWeapon {
+  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aWhiteWizard);
   }
 

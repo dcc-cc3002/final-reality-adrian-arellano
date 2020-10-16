@@ -54,10 +54,10 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
    * The objective of this method, is let the weapon know the
    *  class of playable character who is trying to equip it.
    */
-  protected abstract void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon;
+  protected abstract void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
   @Override
-  public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     if (aWeapon.equals(this.equippedWeapon)) {
       /* Nothing to do, the weapon is already equipped. */
       return;
@@ -66,7 +66,7 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
   }
 
   @Override
-  public void actuallyEquip(@NotNull final IWeapon aWeapon) {
+  public void actuallyEquip(@NotNull final IWeapon aWeapon) throws UnexpectedBehavior {
     if (equippedWeapon != null) {
       equippedWeapon.unEquippedBy(this);
     }

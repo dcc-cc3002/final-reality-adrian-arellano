@@ -3,6 +3,7 @@ package com.github.cc3002.finalreality.model.character.playable;
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +28,7 @@ public class Thief extends AbstractPlayableCharacter {
   }
 
   @Override
-  protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon {
+  protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     aWeapon.equippedByAThief(this);
   }
 

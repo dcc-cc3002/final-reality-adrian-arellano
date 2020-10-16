@@ -24,12 +24,12 @@ public class Bow extends AbstractWeapon {
   }
 
   @Override
-  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws NonAvailableWeapon {
+  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(anEngineer);
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon {
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aThief);
   }
 

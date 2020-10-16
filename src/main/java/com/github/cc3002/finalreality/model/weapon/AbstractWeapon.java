@@ -56,10 +56,11 @@ public abstract class AbstractWeapon implements IWeapon {
   }
 
   @Override
-  public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) {
-    if (supposedCarrier.equals(currentCarrier)) {
-      this.currentCarrier = null;
+  public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) throws UnexpectedBehavior {
+    if (! supposedCarrier.equals(currentCarrier)) {
+      throw new UnexpectedBehavior("The suppose carrier is not the current carrier.");
     }
+    this.currentCarrier = null;
   }
 
   /**
@@ -69,7 +70,7 @@ public abstract class AbstractWeapon implements IWeapon {
    *  carrier of this weapon, and after that, calls the carrier to
    *  actually equip this Weapon.
    */
-  protected void availableToBeEquippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon {
+  protected void availableToBeEquippedBy(@NotNull final IPlayableCharacter newCarrier) throws NonAvailableWeapon, UnexpectedBehavior {
     if (this.currentCarrier != null) {
       /* The weapon has a carrier, a weapon can not be carried by two characters a time. */
       throw new NonAvailableWeapon();
@@ -88,27 +89,27 @@ public abstract class AbstractWeapon implements IWeapon {
   }
 
   @Override
-  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     error();
   }
 
   @Override
-  public void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     error();
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     error();
   }
 
   @Override
-  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     error();
   }
 
   @Override
-  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon {
+  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     error();
   }
 
