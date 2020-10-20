@@ -2,12 +2,14 @@ package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.AbstractCharacter;
 import com.github.cc3002.finalreality.model.character.ICharacter;
+import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
-
-import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
-import com.github.cc3002.finalreality.model.weapon.*;
-import org.jetbrains.annotations.NotNull;
 
 
 /**
@@ -25,22 +27,41 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
   protected IWeapon equippedWeapon;
 
   /**
-   * Initializes some values of a generic playable character.
+   * The generic creator of a new playable character.
    *
-   * @param name       : the PlayableCharacter's name.
-   * @param turnsQueue : the queue of the game in which the character is.
+   * @param name            : the playable character's name.
+   * @param maxHealthPoints : the maximum health points that this character can have.
+   * @param defense         : the defense of this character.
+   * @param turnsQueue      : the queue of the game in which the character is.
    */
   protected AbstractPlayableCharacter(@NotNull final String name,
+                                      final int maxHealthPoints, final int defense,
                                       @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(name, turnsQueue);
+    super(name, maxHealthPoints, defense ,turnsQueue);
+  }
+
+  /**
+   * Returns the current equipped weapon, if and only if,
+   *  the current equipped weapon is not {@code null}.
+   * If the current weapon is null, this method throws an exception.
+   *
+   * @throws NonEquippedWeapon : the exception thrown.
+   */
+  private IWeapon advanceGetWeapon() throws NonEquippedWeapon {
+    if (equippedWeapon == null) {
+      throw new NonEquippedWeapon();
+    }
+    return equippedWeapon;
+  }
+
+  @Override
+  public int getAtk() throws NonEquippedWeapon {
+    return advanceGetWeapon().getDamage();
   }
 
   @Override
   public int getWeight() throws NonEquippedWeapon {
-    if (equippedWeapon == null) {
-      throw new NonEquippedWeapon();
-    }
-    return equippedWeapon.getWeight();
+    return advanceGetWeapon().getWeight();
   }
 
   @Override
@@ -58,11 +79,14 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
 
   @Override
   public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
-    if (aWeapon.equals(this.equippedWeapon)) {
+    if (isKo()) {
+      return;
+    }
+    if (aWeapon.equals(equippedWeapon)) {
       /* Nothing to do, the weapon is already equipped. */
       return;
     }
-    this.equipAuxiliary(aWeapon);
+    equipAuxiliary(aWeapon);
   }
 
   @Override
@@ -70,12 +94,14 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
     if (equippedWeapon != null) {
       equippedWeapon.unEquippedBy(this);
     }
-    this.equippedWeapon = aWeapon;
+    equippedWeapon = aWeapon;
   }
 
-  /*
-   * Equals: If two IPlayableCharacters are the same,
-   *  it does not depend on their equipped weapons.
-   */
+  /* Equals: If two IPlayableCharacters are the same,
+   *  it does not depend on their equipped weapons. */
+  @Override
+  protected boolean equalsAuxiliary(@NotNull final ICharacter aCharacter) {
+    return getClass().equals(aCharacter.getClass());
+  }
 
 }

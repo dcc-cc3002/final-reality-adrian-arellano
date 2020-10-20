@@ -19,22 +19,20 @@ public class Engineer extends AbstractPlayableCharacter {
   /**
    * Creates a new engineer.
    *
-   * @param name       : the PlayableCharacter's name.
-   * @param turnsQueue : the queue of the game in which the character is.
+   * @param name            : the engineer's name.
+   * @param maxHealthPoints : the maximum health points that this character can have.
+   * @param defense         : the defense of this character.
+   * @param turnsQueue      : the queue of the game in which the character is.
    */
   public Engineer(@NotNull final String name,
+                  final int maxHealthPoints, final int defense,
                   @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(name, turnsQueue);
+    super(name, maxHealthPoints, defense ,turnsQueue);
   }
 
   @Override
   protected void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     aWeapon.equippedByAnEngineer(this);
-  }
-
-  @Override
-  protected boolean equalsAuxiliary(@NotNull final ICharacter aCharacter) {
-    return aCharacter instanceof Engineer;
   }
 
 }

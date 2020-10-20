@@ -23,8 +23,8 @@ class StaffTest extends AbstractWeaponTest {
     testWeapon1 = new Staff(STAFF_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Staff("Power Staff", 12, 11);
 
-    sampleCharacter1 = new BlackWizard("Vivi", turns);
-    sampleCharacter2 = new WhiteWizard("Eiko", turns);
+    sampleCharacter1 = new BlackWizard("Vivi", 27, 4, turns);
+    sampleCharacter2 = new WhiteWizard("Eiko", 16, 3, turns);
   }
 
   @Override @Test

@@ -23,8 +23,8 @@ class BowTest extends AbstractWeaponTest {
     testWeapon1 = new Bow(BOW_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Bow("Falcon Bow", 15, 21);
 
-    sampleCharacter1 = new Engineer("Cid", turns);
-    sampleCharacter2 = new Thief("Zidane", turns);
+    sampleCharacter1 = new Engineer("Cid", 15, 5, turns);
+    sampleCharacter2 = new Thief("Zidane", 21, 0, turns);
   }
 
   @Override @Test

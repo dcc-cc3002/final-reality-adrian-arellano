@@ -23,8 +23,8 @@ class AxeTest extends AbstractWeaponTest {
     testWeapon1 = new Axe(AXE_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Axe("Great Axe", 22,  19);
 
-    sampleCharacter1 = new Knight("Albert", turns);
-    sampleCharacter2 = new Engineer("Cid", turns);
+    sampleCharacter1 = new Knight("Albert", 20, 6, turns);
+    sampleCharacter2 = new Engineer("Cid", 15, 5, turns);
   }
 
   @Override @Test

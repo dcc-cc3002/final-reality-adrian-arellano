@@ -15,10 +15,13 @@ import org.junit.jupiter.api.Test;
 class WhiteWizardTest extends AbstractPlayableCharacterTest {
 
   private static final String WHITE_WIZARD_NAME = "Eiko";
+  private static final int WHITE_WIZARD_MAX_HP = 16;
+  private static final int WHITE_WIZARD_DEF = 3;
 
   @Override
   protected void setUpCharacter() {
-    testCharacter = new WhiteWizard(WHITE_WIZARD_NAME, turns);
+    testCharacter = new WhiteWizard(WHITE_WIZARD_NAME, WHITE_WIZARD_MAX_HP, WHITE_WIZARD_DEF, turns);
+    attackedCharacter = new BlackWizard(DUMMY_NAME, DUMMY_HP, DUMMY_DEF, turns);
   }
 
   @Override
@@ -34,9 +37,9 @@ class WhiteWizardTest extends AbstractPlayableCharacterTest {
   @Override @Test
   protected void constructorTest() {
     checkConstruction(
-        new WhiteWizard(WHITE_WIZARD_NAME, turns),
-        new WhiteWizard("Different White Wizard", turns),
-        new Enemy(WHITE_WIZARD_NAME, 10, turns)
+        new WhiteWizard(WHITE_WIZARD_NAME, WHITE_WIZARD_MAX_HP, WHITE_WIZARD_DEF, turns),
+        new WhiteWizard("Different White Wizard", WHITE_WIZARD_MAX_HP, WHITE_WIZARD_DEF, turns),
+        new Enemy(WHITE_WIZARD_NAME, WHITE_WIZARD_MAX_HP, WHITE_WIZARD_DEF, 1, 10, turns)
     );
   }
 

@@ -1,8 +1,9 @@
 package com.github.cc3002.finalreality.model.character;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A class that represents a non-playable character of the game,
@@ -12,18 +13,31 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Enemy extends AbstractCharacter {
 
+  private final int attack;
   private final int weight;
 
+
   /**
-   * Creates a new character.
+   * Creates a new Enemy.
    *
-   * @param name       : the Enemy's name.
-   * @param turnsQueue : The queue of the game in which the character is.
+   * @param name            : the Enemy's name.
+   * @param maxHealthPoints : the maximum health points that this character can have.
+   * @param defense         : the defense of this character.
+   * @param attack          : the attack of this character for the rest of the game.
+   * @param weight          : the weight of this character for the rest of the game.
+   * @param turnsQueue      : the queue of the game in which the character is.
    */
-  public Enemy(@NotNull final String name, final int weight,
+  public Enemy(@NotNull final String name, final int maxHealthPoints,
+               final int defense, final int attack, final int weight,
                @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(name, turnsQueue);
+    super(name, maxHealthPoints, defense ,turnsQueue);
+    this.attack = attack;
     this.weight = weight;
+  }
+
+  @Override
+  public int getAtk() {
+    return attack;
   }
 
   @Override
@@ -33,7 +47,7 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getWeight(), this.getClass());
+    return Objects.hash(getName(), getMaxHp(), getDef(), getAtk(), getWeight(), getClass());
   }
 
   @Override
@@ -42,8 +56,8 @@ public class Enemy extends AbstractCharacter {
       return false;
     }
     Enemy that = (Enemy) aCharacter;
-    return getWeight() == that.getWeight();
+    return getAtk() == getAtk() &&
+        getWeight() == that.getWeight();
   }
-
 
 }

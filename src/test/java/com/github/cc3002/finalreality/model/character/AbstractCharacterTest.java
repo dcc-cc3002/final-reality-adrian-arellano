@@ -3,6 +3,8 @@ package com.github.cc3002.finalreality.model.character;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
 import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
@@ -10,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static java.lang.Integer.max;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -24,9 +27,15 @@ public abstract class AbstractCharacterTest {
 
   protected BlockingQueue<ICharacter> turns;
   protected ICharacter testCharacter;
+  protected ICharacter attackedCharacter;
+
+  protected final String DUMMY_NAME = "Dummy";
+  protected final int DUMMY_HP = 100;
+  protected final int DUMMY_DEF = 0;
 
   /**
    * Initialize the {@code testCharacter} which is been tested.
+   * And the Dummy {@code attackedCharacter}.
    */
   protected abstract void setUpCharacter();
 
@@ -69,16 +78,47 @@ public abstract class AbstractCharacterTest {
   protected abstract void constructorTest();
 
   /**
-   * Test if {@code getWeight()} works properly,
-   *  it could throws an exception.
+   * Test {@code getAtk()} and {@code getWeight()} to see if they properly.
+   * In the case of a {@code IPlayableCharacter}, this method test if {@code equip(IWeapon)}
+   *  is consistence and returns Attack an Weight as it should.
+   *
+   * @see AbstractCharacter#getAtk()
+   * @see AbstractCharacter#getWeight()
+   * @see AbstractPlayableCharacter#equip(IWeapon)
    */ @Test
-  protected abstract void getWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+  protected abstract void getAtkAndWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
 
   /**
-   * Let the {@code testCharacter} ready to use the {@code waitTurn()},
+   * Let the {@code testCharacter} ready to use the {@code waitTurn()} and {@code getAtk()}
    *  without the possibility of failing.
    */
-  protected abstract void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+  protected abstract void getReadyToPlay() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+
+  /** The Character receives an attack such as powerful, to get K.O. */
+  protected void defeatCharacter() {
+    assertEquals(testCharacter.getMaxHp(), testCharacter.getCurrentHp());
+    final int powerfulAtk = testCharacter.getMaxHp() + testCharacter.getDef();
+    testCharacter.receiveAtk(powerfulAtk);
+    assertEquals(0, testCharacter.getCurrentHp());
+  }
+
+  /**
+   * Test the {@code attack(ICharacter)} method of a character.
+   */ @Test
+  void attackTest() throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon, NonEquippedWeapon {
+    assertEquals(testCharacter.getMaxHp(), testCharacter.getCurrentHp());
+    assertEquals(attackedCharacter.getMaxHp(), attackedCharacter.getCurrentHp());
+
+    getReadyToPlay();
+    testCharacter.attack(attackedCharacter);
+    final int expectedHP = max(0, DUMMY_HP - testCharacter.getAtk());
+    assertEquals(expectedHP, attackedCharacter.getCurrentHp());
+
+    defeatCharacter();
+    testCharacter.attack(attackedCharacter);
+    /* Attack was not received */
+    assertEquals(expectedHP, attackedCharacter.getCurrentHp());
+  }
 
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
@@ -86,7 +126,7 @@ public abstract class AbstractCharacterTest {
   void waitTurnTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     assertTrue(turns.isEmpty());
 
-    this.getReadyToWaitTurn();
+    this.getReadyToPlay();
     /* getWeight() and waitTurn() should not to throw an exception. */
     final int expectedWaitingTime = testCharacter.getWeight() * 10;  // divided by 10
     testCharacter.waitTurn();
