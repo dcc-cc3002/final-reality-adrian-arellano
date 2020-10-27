@@ -1,7 +1,10 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
-import com.github.cc3002.finalreality.model.weapon.*;
+import com.github.cc3002.finalreality.model.weapon.IWeapon;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,8 +23,11 @@ public interface IPlayableCharacter extends ICharacter {
 
   /* Setters */
 
-  /** Equips a weapon to the PlayableCharacter. */
-  void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon;
+  /**
+   * Equips a weapon to the PlayableCharacter.
+   * If this character is K.O. can not attack.
+   */
+  void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
 
     /* Double Dispatch of "equip" */
@@ -31,6 +37,6 @@ public interface IPlayableCharacter extends ICharacter {
    *  and, no matter what, sets {@param aWeapon} as the new equipped
    *  weapon of this playable character.
    */
-  void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon;
+  void actuallyEquip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon, UnexpectedBehavior;
 
 }

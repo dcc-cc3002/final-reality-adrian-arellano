@@ -14,10 +14,13 @@ import org.junit.jupiter.api.Test;
 class KnightTest extends AbstractPlayableCharacterTest {
 
   private static final String KNIGHT_NAME = "Adelbert";
+  private static final int KNIGHT_MAX_HP = 20;
+  private static final int KNIGHT_DEF = 6;
 
   @Override
   protected void setUpCharacter() {
-    testCharacter = new Knight(KNIGHT_NAME, turns);
+    testCharacter = new Knight(KNIGHT_NAME, KNIGHT_MAX_HP, KNIGHT_DEF, turns);
+    attackedCharacter = new Thief(DUMMY_NAME, DUMMY_HP, DUMMY_DEF, turns);
   }
 
   @Override
@@ -35,9 +38,9 @@ class KnightTest extends AbstractPlayableCharacterTest {
   @Override @Test
   protected void constructorTest() {
     checkConstruction(
-        new Knight(KNIGHT_NAME, turns),
-        new Knight("Different Knight", turns),
-        new Engineer(KNIGHT_NAME, turns)
+        new Knight(KNIGHT_NAME, KNIGHT_MAX_HP, KNIGHT_DEF, turns),
+        new Knight("Different Knight", KNIGHT_MAX_HP, KNIGHT_DEF, turns),
+        new Engineer(KNIGHT_NAME, KNIGHT_MAX_HP, KNIGHT_DEF, turns)
     );
   }
 

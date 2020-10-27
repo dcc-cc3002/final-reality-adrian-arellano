@@ -23,8 +23,8 @@ class KnifeTest extends AbstractWeaponTest {
     testWeapon1 = new Knife(KNIFE_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Knife("Large Dagger", 7, 16);
 
-    sampleCharacter1 = new Knight("Albert", turns);
-    sampleCharacter2 = new Thief("Zidane", turns);
+    sampleCharacter1 = new Knight("Albert", 20, 6, turns);
+    sampleCharacter2 = new Thief("Zidane", 21, 0, turns);
   }
 
   @Override @Test
@@ -36,7 +36,7 @@ class KnifeTest extends AbstractWeaponTest {
   }
 
   @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     checkHolder(new Knife(KNIFE_NAME, DAMAGE, WEIGHT));
   }
 

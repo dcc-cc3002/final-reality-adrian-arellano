@@ -45,14 +45,14 @@ public abstract class AbstractWeaponTest {
       @NotNull final IWeapon expectedWeapon,
       @NotNull final IWeapon differentClassWeapon
   ) {
-    assertEquals(expectedWeapon, testWeapon1);
+    assertEquals(testWeapon1, expectedWeapon);
     /* equals */
     final var o = new Object();
-    assertNotEquals(o, testWeapon1);
-    assertNotEquals(testWeapon2, testWeapon1);
-    assertNotEquals(differentClassWeapon, testWeapon1);
+    assertNotEquals(testWeapon1, o);
+    assertNotEquals(testWeapon1, testWeapon2);
+    assertNotEquals(testWeapon1, differentClassWeapon);
     /* hashCode */
-    assertEquals(expectedWeapon.hashCode(), testWeapon1.hashCode());
+    assertEquals(testWeapon1.hashCode(), expectedWeapon.hashCode());
   }
 
   /**
@@ -62,14 +62,35 @@ public abstract class AbstractWeaponTest {
   protected abstract void constructorTest();
 
 
-  /* From now on the PlayableCharacters are needed */
+  /**
+   * Test the method {@code unEquippedBy(PlayableCharacter)}, which is used
+   *  used for the double dispatch of {@code equip(IWeapon)}, but the method
+   *  should not be called by any external object.
+   * An example of an external object which could call this, would be the controller.
+   *
+   * @see AbstractWeapon#unEquippedBy(IPlayableCharacter)
+   * @see com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter#equip(IWeapon)
+   */ @Test
+  void misusedUnEquippedByTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
+    final Exception e1 = assertThrows(UnexpectedBehavior.class,
+        () -> testWeapon1.unEquippedBy(sampleCharacter1));
+    assertEquals("The suppose carrier is not the current carrier.", e1.getMessage());
+    sampleCharacter1.equip(testWeapon1);
+    assertEquals(sampleCharacter1, testWeapon1.getCurrentCarrier());
+    assertEquals(testWeapon1, sampleCharacter1.getEquippedWeapon());
+    final Exception e2 = assertThrows(UnexpectedBehavior.class,
+        () -> testWeapon1.unEquippedBy(sampleCharacter2));
+    assertEquals("The suppose carrier is not the current carrier.", e2.getMessage());
+  }
+
+    /* From now on the PlayableCharacters are needed */
 
 
   /**
    * Auxiliary method created to be run by {@link #differentHolderTest()}
    *  inside all the classes which implement an IWeapon.
    */
-  protected void checkHolder(@NotNull final IWeapon copyOfTestWeapon1) throws NonAvailableWeapon, UnsupportedWeapon {
+  protected void checkHolder(@NotNull final IWeapon copyOfTestWeapon1) throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     /* The weapons are equals, but they don't have the same memory location. */
     assertEquals(copyOfTestWeapon1, testWeapon1);
     assertNotSame(copyOfTestWeapon1, testWeapon1);
@@ -85,13 +106,13 @@ public abstract class AbstractWeaponTest {
    *  but they are held by different Character's, then they
    *  are not the same weapon.
    */ @Test
-  protected abstract void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon;
+  protected abstract void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
 
   /**
    * Test the concept that a weapon
    *  can be held by only one Character a time.
    */ @Test
-  protected void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon {
+  void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     sampleCharacter1.equip(testWeapon1);
     assertEquals(testWeapon1, sampleCharacter1.getEquippedWeapon());
 

@@ -24,7 +24,7 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   protected static IPlayableCharacter testPlayableCharacter;
   protected static Set<String> equippableWeapons;
 
-  private final static Map<String, IWeapon> weaponsSample = new HashMap<>();
+  private static final Map<String, IWeapon> weaponsSample = new HashMap<>();
 
   /**
    * Saves in the variable: {@param equippableWeapons},
@@ -45,15 +45,10 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   protected void setUp() {
     super.setUp();
     weaponsSample.put("Axe", new Axe("Battle Axe", 16, 14));
-    new Axe("Great Axe", 22,  19);
     weaponsSample.put("Bow", new Bow("Ordinary Bow", 10, 15));
-    new Bow("Falcon Bow", 15, 21);
     weaponsSample.put("Knife", new Knife("Small Knife", 5, 10));
-    new Knife("Large Dagger", 7, 16);
     weaponsSample.put("Staff", new Staff("Wooden Staff", 6, 28));
-    new Staff("Power Staff", 12, 11);
     weaponsSample.put("Sword", new Sword("Rapier", 9, 12));
-    new Sword("Saber", 13, 6);
     /* Initialize a IPlayableCharacter as an ICharacter. */
     this.setUpCharacter();
     /* We are testing the IPlayableCharacter sub-classes, so we can do this cast. */
@@ -63,49 +58,64 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
     this.setUpEquippableWeapons();
   }
 
-  @Override @Test
-  protected void getWeightTest() throws NonAvailableWeapon, UnsupportedWeapon {
-    /* A exception should raise. */
-    assertThrows(NonEquippedWeapon.class,
-        () -> testCharacter.getWeight());
-    /* We do this using testPlayableCharacter, because
-     *  ICharacter does not have the equip() method */
-    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
-    testPlayableCharacter.equip(aWeapon);
-    try {
-      assertEquals(aWeapon.getWeight(), testCharacter.getWeight());
-    } catch (NonEquippedWeapon e) {
-      System.err.println(e.getClass().toString());
-    }
-  }
-
-  @Override
-  protected void getReadyToWaitTurn() throws NonAvailableWeapon, UnsupportedWeapon {
-    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
-    testPlayableCharacter.equip(aWeapon);
-  }
-
-  /* From now on the IWeapons are needed */
-
   /**
    * Test that this Sub-PlayableCharacterType can only equip
-   *  the weapons pointed out inside {@param equippableWeapons}.
+   *  the weapons pointed out inside {@code equippableWeapons}.
    *
    *    This method should not raise any exceptions.
    */ @Test
-  protected void equipWeaponTest() throws UnsupportedWeapon, NonAvailableWeapon {
+  void equipWeaponTest1() throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     for (String weaponType : weaponsSample.keySet()) {
       IWeapon aWeapon = weaponsSample.get(weaponType);
 
       if (equippableWeapons.contains(weaponType)) {
         testPlayableCharacter.equip(aWeapon);
         assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
-      }
-      else {  /* The exception should occur. */
+      } else {  /* The exception should occur. */
         assertThrows(UnsupportedWeapon.class,
             () -> testPlayableCharacter.equip(aWeapon));
       }
     }
+  }
+
+  /**
+   * Test the concept that a character cannot equip a weapon if is K.O.
+   */ @Test
+  void equipWeaponTest2() throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon {
+    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
+    assertNotEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
+    /* the character is K.O. and tries to equip another weapon */
+    defeatCharacter();
+    testPlayableCharacter.equip(aWeapon);
+    /* weapon was not equipped */
+    assertNotEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
+  }
+
+  @Override @Test
+  protected void getAtkAndWeightTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior, NonEquippedWeapon {
+    assertThrows(NonEquippedWeapon.class,
+        () -> testCharacter.getAtk());
+    assertThrows(NonEquippedWeapon.class,
+        () -> testCharacter.getWeight());
+    assertThrows(NonEquippedWeapon.class,
+        () -> testCharacter.waitTurn());
+    assertThrows(NonEquippedWeapon.class,
+        () -> testCharacter.attack(attackedCharacter));
+
+
+    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
+    testPlayableCharacter.equip(aWeapon);
+    assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon(),
+        "The weapon was not equipped. The current weapon is: " + testPlayableCharacter.getEquippedWeapon());
+
+    assertEquals(aWeapon.getDamage(), testCharacter.getAtk());
+    assertEquals(aWeapon.getWeight(), testCharacter.getWeight());
+  }
+
+  @Override
+  protected void getReadyToPlay() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
+    final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
+    testPlayableCharacter.equip(aWeapon);
   }
 
 }

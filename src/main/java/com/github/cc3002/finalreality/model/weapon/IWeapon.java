@@ -33,24 +33,24 @@ public interface IWeapon {
    *  For security it only works, when the {@param supposedCarrier}
    *  actually is the currentCarrier of the Weapon.
    */
-  void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier);
+  void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) throws UnexpectedBehavior;
 
 
     /* Double Dispatch of "equip" */
 
   /** Let this weapon knows that an Engineer is trying to take it. */
-  void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
   /** Let this weapon knows that a Knight is trying to take it. */
-  void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equippedByAKnight(@NotNull final Knight aKnight) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
   /** Let this weapon knows that a Thief is trying to take it. */
-  void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equippedByAThief(@NotNull final Thief aThief) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
   /** Let this weapon knows that a Black Wizard is trying to take it. */
-  void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
   /** Let this weapon knows that a White Wizard is trying to take it. */
-  void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon;
+  void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
 
 }
