@@ -2,6 +2,7 @@ package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.AbstractPlayableCharacterTest;
 import com.github.cc3002.finalreality.model.character.Enemy;
+import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +41,7 @@ class EngineerTest extends AbstractPlayableCharacterTest {
     checkConstruction(
         new Engineer(ENGINEER_NAME, ENGINEER_MAX_HP, ENGINEER_DEF, turns),
         new Engineer("Different Engineer", ENGINEER_MAX_HP, ENGINEER_DEF, turns),
-        new BlackWizard(ENGINEER_NAME, ENGINEER_MAX_HP, ENGINEER_DEF, turns)
+        new BlackWizard(ENGINEER_NAME, ENGINEER_MAX_HP, 30, ENGINEER_DEF, turns)
     );
   }
 

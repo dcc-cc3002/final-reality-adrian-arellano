@@ -2,7 +2,6 @@ package com.github.cc3002.finalreality.model.character;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,8 +13,8 @@ import static java.lang.Integer.min;
 /**
  * An abstract class which implements the basic behaviour of a character in the game.
  *
- * It's important to highlight that, this is an abstract class,
- *  so the whole behavior of a character is not here.
+ * It's important to highlight that, this is an abstract class so, the whole behavior of a character
+ *  is not necessarily here.
  *
  * @author Ignacio Slater Muñoz.
  * @author Adrian Arellano.
@@ -29,8 +28,9 @@ public abstract class AbstractCharacter implements ICharacter {
 
   private int currentHealthPoints;
   private ScheduledExecutorService scheduledExecutor;
+
   /**
-   * The generic creator of a new character.
+   * Initializes the basic parameters for any character.
    *
    * @param name            : the character's name.
    * @param maxHealthPoints : the maximum health points that this character can have.
@@ -67,8 +67,8 @@ public abstract class AbstractCharacter implements ICharacter {
     return defense;
   }
 
-  /** Returns true is this player is K.O. */
-  protected boolean isKo() {
+  @Override
+  public boolean isKo() {
     return currentHealthPoints <= 0;
   }
 
@@ -79,15 +79,19 @@ public abstract class AbstractCharacter implements ICharacter {
 
   @Override
   public void attack(@NotNull final ICharacter opponent) throws NonEquippedWeapon {
-    if (!isKo()) {
-      opponent.receiveAtk(getAtk());
+    if (isKo()) {
+      return;
     }
+    opponent.receiveAtk(getAtk());
   }
 
   @Override
-  public void receiveAtk(int damage) {
-    damage = max(0, damage - getDef());
-    setHp(getCurrentHp() - damage);
+  public void receiveAtk(int atkPower) {
+    if (isKo()){
+      return;
+    }
+    atkPower = max(0, atkPower - getDef());
+    setHp(getCurrentHp() - atkPower);
   }
 
   /** Adds this character to the turns queue. */
@@ -102,34 +106,18 @@ public abstract class AbstractCharacter implements ICharacter {
     scheduledExecutor.schedule(this::addToQueue, getWeight() * 100, TimeUnit.MILLISECONDS);
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(getName(), getMaxHp(), getDef(), getClass());
-  }
-
   /**
-   * Method created to complete the method {@code equals}
-   *  of each {@code ICharacter}'s sub-class.
+   * Compares the attributes of the given character with the attributes of this character, to know
+   *  if they are equals or not.
    *
-   * @param aCharacter : a candidate to be equals to this character.
+   * @param that : the given character to be compared.
    *
    * @see #equals(Object)
    */
-  protected abstract boolean equalsAuxiliary(@NotNull final ICharacter aCharacter);
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof ICharacter)) {
-      return false;
-    }
-    final ICharacter that = (ICharacter) o;
+  protected boolean compareAttributes(@NotNull final ICharacter that) {
     return getName().equals(that.getName()) &&
         getMaxHp() == that.getMaxHp() &&
-        getDef() == getDef() &&
-        this.equalsAuxiliary(that);
+        getDef() == that.getDef();
   }
 
 }

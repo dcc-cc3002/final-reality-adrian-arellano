@@ -11,23 +11,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
 
-
 /**
- * An abstract class which implements the basic behaviour
- *  of a playable character in the game.
+ * An abstract class which implements the basic behaviour of a playable character in the game.
  *
- * It's important to highlight that, this is an abstract class,
- *  so the whole behavior of a character is not here.
+ * It's important to highlight that, this is an abstract class, so the whole behavior of a character
+ *  is not necessarily here.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
-public abstract class AbstractPlayableCharacter extends AbstractCharacter implements IPlayableCharacter {
+public abstract class AbstractPlayableCharacter extends AbstractCharacter implements
+    IPlayableCharacter {
 
-  /* This variable could be null */
+  /* This variable could be null! */
   protected IWeapon equippedWeapon;
 
   /**
-   * The generic creator of a new playable character.
+   * Initializes the basic parameters for any playable character.
    *
    * @param name            : the playable character's name.
    * @param maxHealthPoints : the maximum health points that this character can have.
@@ -41,11 +40,13 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
   }
 
   /**
-   * Returns the current equipped weapon, if and only if,
-   *  the current equipped weapon is not {@code null}.
-   * If the current weapon is null, this method throws an exception.
+   * Returns the current equipped weapon, if and only if, the current equipped weapon is not
+   *  {@code null}.
    *
-   * @throws NonEquippedWeapon : the exception thrown.
+   * @throws NonEquippedWeapon : exception thrown when the current weapon is null.
+   *
+   * @see #getAtk()
+   * @see #getWeight()
    */
   private IWeapon advanceGetWeapon() throws NonEquippedWeapon {
     if (equippedWeapon == null) {
@@ -70,20 +71,24 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
   }
 
   /**
-   * Method created to be overridden by the sub-classes of this
-   *  abstract class.
-   * The objective of this method, is let the weapon know the
-   *  class of playable character who is trying to equip it.
+   * This method was created to be overridden by the sub-classes of this abstract class.
+   * The objective of this method, is to let the weapon know the class of this playable character
+   *  which is trying to equip it.
+   *
+   * @see #equip(IWeapon)
    */
-  protected abstract void equipAuxiliary(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior;
+  protected abstract void equipAuxiliary(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon,
+      UnexpectedBehavior, UnsupportedWeapon;
 
   @Override
-  public void equip(@NotNull final IWeapon aWeapon) throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
+  public void equip(@NotNull final IWeapon aWeapon) throws NonAvailableWeapon, UnexpectedBehavior,
+      UnsupportedWeapon {
     if (isKo()) {
       return;
     }
-    if (aWeapon.equals(equippedWeapon)) {
-      /* Nothing to do, the weapon is already equipped. */
+    /* It's not enough that the both weapons were equals, they has to be exactly the same weapon
+     * (the same reference). */
+    if (aWeapon == equippedWeapon) {
       return;
     }
     equipAuxiliary(aWeapon);
@@ -99,9 +104,5 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
 
   /* Equals: If two IPlayableCharacters are the same,
    *  it does not depend on their equipped weapons. */
-  @Override
-  protected boolean equalsAuxiliary(@NotNull final ICharacter aCharacter) {
-    return getClass().equals(aCharacter.getClass());
-  }
 
 }

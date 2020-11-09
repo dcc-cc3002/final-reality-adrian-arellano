@@ -12,24 +12,25 @@ import org.jetbrains.annotations.NotNull;
 public class Bow extends AbstractWeapon {
 
   /**
-   * Initializes the values of a Bow.
+   * Creates a new Bow.
    *
    * @param name   : the name of the weapon.
    * @param damage : the damage that the weapon deals.
    * @param weight : the weight of the weapon (which affects to the speed of an attack).
    */
-  public Bow(@NotNull final String name, final int damage,
-             final int weight) {
+  public Bow(@NotNull final String name, final int damage, final int weight) {
     super(name, damage, weight);
   }
 
   @Override
-  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAnEngineer(@NotNull final Engineer anEngineer) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(anEngineer);
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aThief);
   }
 

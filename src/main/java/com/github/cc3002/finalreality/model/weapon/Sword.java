@@ -12,24 +12,25 @@ import org.jetbrains.annotations.NotNull;
 public class Sword extends AbstractWeapon {
 
   /**
-   * Initializes the values of a Sword.
+   * Creates a new Sword.
    *
    * @param name   : the name of the weapon.
    * @param damage : the damage that the weapon deals.
    * @param weight : the weight of the weapon (which affects to the speed of an attack).
    */
-  public Sword(@NotNull final String name, final int damage,
-                  final int weight) {
+  public Sword(@NotNull final String name, final int damage, final int weight) {
     super(name, damage, weight);
   }
 
   @Override
-  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aKnight);
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aThief);
   }
 

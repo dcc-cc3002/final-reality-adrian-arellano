@@ -1,6 +1,7 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
 import com.github.cc3002.finalreality.model.character.AbstractPlayableCharacterTest;
+import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ class ThiefTest extends AbstractPlayableCharacterTest {
   @Override
   protected void setUpCharacter() {
     testCharacter = new Thief(THIEF_NAME, THIEF_MAX_HP, THIEF_DEF, turns);
-    attackedCharacter = new WhiteWizard(DUMMY_NAME, DUMMY_HP, DUMMY_DEF, turns);
+    attackedCharacter = new WhiteWizard(DUMMY_NAME, DUMMY_HP, 25, DUMMY_DEF, turns);
   }
 
   @Override
