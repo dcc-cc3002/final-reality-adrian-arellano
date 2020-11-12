@@ -1,6 +1,6 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
+import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizard;
 import com.github.cc3002.finalreality.model.character.playable.Knight;
 import com.github.cc3002.finalreality.model.character.playable.Thief;
 import org.jetbrains.annotations.NotNull;
@@ -13,29 +13,31 @@ import org.jetbrains.annotations.NotNull;
 public class Knife extends AbstractWeapon {
 
   /**
-   * Initializes the values of a Knife.
+   * Creates a new Knife.
    *
    * @param name   : the name of the weapon.
    * @param damage : the damage that the weapon deals.
    * @param weight : the weight of the weapon (which affects to the speed of an attack).
    */
-  public Knife(@NotNull final String name, final int damage,
-                  final int weight) {
+  public Knife(@NotNull final String name, final int damage, final int weight) {
     super(name, damage, weight);
   }
 
   @Override
-  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAKnight(@NotNull final Knight aKnight) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aKnight);
   }
 
   @Override
-  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAThief(@NotNull final Thief aThief) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aThief);
   }
 
   @Override
-  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon,
+      UnexpectedBehavior {
     super.availableToBeEquippedBy(aBlackWizard);
   }
 

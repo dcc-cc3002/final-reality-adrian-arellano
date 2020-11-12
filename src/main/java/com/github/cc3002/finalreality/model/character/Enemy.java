@@ -16,9 +16,8 @@ public class Enemy extends AbstractCharacter {
   private final int attack;
   private final int weight;
 
-
   /**
-   * Creates a new Enemy.
+   * Creates a new enemy.
    *
    * @param name            : the Enemy's name.
    * @param maxHealthPoints : the maximum health points that this character can have.
@@ -47,16 +46,20 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getMaxHp(), getDef(), getAtk(), getWeight(), getClass());
+    return Objects.hash(getName(), getMaxHp(), getDef(), getAtk(), getWeight(), Enemy.class);
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final ICharacter aCharacter) {
-    if (!(aCharacter instanceof Enemy)) {
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Enemy)) {
       return false;
     }
-    Enemy that = (Enemy) aCharacter;
-    return getAtk() == getAtk() &&
+    final Enemy that = (Enemy) o;
+    return compareAttributes(that) &&
+        getAtk() == that.getAtk() &&
         getWeight() == that.getWeight();
   }
 

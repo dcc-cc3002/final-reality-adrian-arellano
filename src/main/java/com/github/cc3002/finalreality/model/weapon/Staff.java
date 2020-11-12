@@ -1,7 +1,7 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
-import com.github.cc3002.finalreality.model.character.playable.WhiteWizard;
+import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizard;
+import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -12,24 +12,25 @@ import org.jetbrains.annotations.NotNull;
 public class Staff extends AbstractWeapon {
 
   /**
-   * Initializes the values of a Staff.
+   * Creates a new Staff.
    *
    * @param name   : the name of the weapon.
    * @param damage : the damage that the weapon deals.
    * @param weight : the weight of the weapon (which affects to the speed of an attack).
    */
-  public Staff(@NotNull final String name, final int damage,
-                  final int weight) {
+  public Staff(@NotNull final String name, final int damage, final int weight) {
     super(name, damage, weight);
   }
 
   @Override
-  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByABlackWizard(@NotNull final BlackWizard aBlackWizard) throws
+      NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aBlackWizard);
   }
 
   @Override
-  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws NonAvailableWeapon, UnexpectedBehavior {
+  public void equippedByAWhiteWizard(@NotNull final WhiteWizard aWhiteWizard) throws
+      NonAvailableWeapon, UnexpectedBehavior {
     super.availableToBeEquippedBy(aWhiteWizard);
   }
 

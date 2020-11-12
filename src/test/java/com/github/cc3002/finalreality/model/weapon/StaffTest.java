@@ -1,7 +1,7 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.cc3002.finalreality.model.character.playable.BlackWizard;
-import com.github.cc3002.finalreality.model.character.playable.WhiteWizard;
+import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizard;
+import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +23,8 @@ class StaffTest extends AbstractWeaponTest {
     testWeapon1 = new Staff(STAFF_NAME, DAMAGE, WEIGHT);
     testWeapon2 = new Staff("Power Staff", 12, 11);
 
-    sampleCharacter1 = new BlackWizard("Vivi", 27, 4, turns);
-    sampleCharacter2 = new WhiteWizard("Eiko", 16, 3, turns);
+    sampleCharacter1 = new BlackWizard("Vivi", 27, 30,4, turns);
+    sampleCharacter2 = new WhiteWizard("Eiko", 16, 25,3, turns);
   }
 
   @Override @Test
