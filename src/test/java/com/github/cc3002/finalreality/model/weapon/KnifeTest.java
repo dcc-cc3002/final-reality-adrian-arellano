@@ -35,9 +35,4 @@ class KnifeTest extends AbstractWeaponTest {
     );
   }
 
-  @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
-    checkHolder(new Knife(KNIFE_NAME, DAMAGE, WEIGHT));
-  }
-
 }

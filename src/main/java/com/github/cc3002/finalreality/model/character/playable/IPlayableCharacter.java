@@ -1,5 +1,6 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
+import com.github.cc3002.finalreality.controller.PlayableKoHandler;
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.weapon.IWeapon;
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
@@ -14,6 +15,15 @@ import org.jetbrains.annotations.NotNull;
  * @author Adrian Arellano.
  */
 public interface IPlayableCharacter extends ICharacter {
+
+  /* Observer Pattern */
+
+  /**
+   * Allows a {@code PlayableKoHandler} subscribe itself to this publisher.
+   * We only let this kind of listener to subscribe, to have no problems with typing.
+   */
+  void addPlayableKoListener(@NotNull final PlayableKoHandler listener);
+
 
   /* Getters */
 

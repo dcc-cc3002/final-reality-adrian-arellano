@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class which initialize the parameters of a Staff
- *  to execute the tests declared inside the super class.
+ * Class which initialize the parameters of a Staff to execute the tests declared inside the super
+ *  class.
  *
  * @author Adrian Arellano.
  * @see Staff
@@ -33,11 +33,6 @@ class StaffTest extends AbstractWeaponTest {
         new Staff(STAFF_NAME, DAMAGE, WEIGHT),
         new Knife(STAFF_NAME, DAMAGE, WEIGHT)
     );
-  }
-
-  @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
-    checkHolder(new Staff(STAFF_NAME, DAMAGE, WEIGHT));
   }
 
 }

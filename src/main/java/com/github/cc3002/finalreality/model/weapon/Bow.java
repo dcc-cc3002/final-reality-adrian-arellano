@@ -4,10 +4,12 @@ import com.github.cc3002.finalreality.model.character.playable.Engineer;
 import com.github.cc3002.finalreality.model.character.playable.Thief;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * This class represents a Bow in the game.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
 public class Bow extends AbstractWeapon {
 
@@ -35,8 +37,20 @@ public class Bow extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Bow;
+  public int hashCode() {
+    return Objects.hash(getName(), getDamage(), getWeight(), Bow.class);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Bow)) {
+      return false;
+    }
+    final Bow that = (Bow) o;
+    return compareAttributes(that);
   }
 
 }

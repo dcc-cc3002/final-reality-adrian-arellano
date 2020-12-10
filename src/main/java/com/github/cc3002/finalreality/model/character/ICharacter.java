@@ -47,8 +47,13 @@ public interface ICharacter {
    */
   int getWeight() throws NonEquippedWeapon;
 
-  /** Returns True is this player is out of combat, anf False if not. */
+  /** Returns true is this character is out of combat, and false if not. */
   boolean isKo();
+
+  /**
+   * Returns true if this character is an instance of {@code IPlayableCharacter}, and false if not.
+   */
+  boolean isPlayable();
 
 
   /**

@@ -1,20 +1,17 @@
-package com.github.cc3002.finalreality.model.character.playable;
+package com.github.cc3002.finalreality.model.character.playable.wizard;
 
-import com.github.cc3002.finalreality.model.character.AbstractPlayableCharacterTest;
 import com.github.cc3002.finalreality.model.character.Enemy;
-import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizard;
-import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class which initialize the parameters of a white wizard
- *  to execute the tests declared inside the super classes.
+ * Class which initialize the parameters of a white wizard to execute the tests declared inside the
+ *  super classes.
  *
  * @author Adrian Arellano.
  * @see WhiteWizard
  */
-class WhiteWizardTest extends AbstractPlayableCharacterTest {
+class WhiteWizardTest extends AbstractWizardTest {
 
   private static final String WHITE_WIZARD_NAME = "Eiko";
   private static final int WHITE_WIZARD_MAX_HP = 16;

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * This interface represents a weapon in the game, and each
  *  functionality that a generic weapon, should have.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
 public interface IWeapon {
 

@@ -16,8 +16,7 @@ import static java.lang.Integer.max;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Abstract class containing the common tests
- *  for all the types of characters.
+ * Abstract class containing the common tests for all the types of characters.
  *
  * @author Ignacio Slater Muñoz.
  * @author Adrian Arellano.
@@ -25,22 +24,22 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public abstract class AbstractCharacterTest {
 
-  protected BlockingQueue<ICharacter> turns;
-  protected ICharacter testCharacter;
-  protected ICharacter attackedCharacter;
+  protected static BlockingQueue<ICharacter> turns;
+  protected static ICharacter testCharacter;
+  protected static ICharacter attackedCharacter;
 
   protected final String DUMMY_NAME = "Dummy";
   protected final int DUMMY_HP = 100;
   protected final int DUMMY_DEF = 0;
 
   /**
-   * Initialize the {@code testCharacter} which is been tested.
+   * Initializes the {@code testCharacter} which is been tested.
    * And the Dummy {@code attackedCharacter}.
    */
   protected abstract void setUpCharacter();
 
   /**
-   * Initialize every variable to run properly
+   * Initializes every variable to run properly
    *  the test suite of this class.
    */ @BeforeEach
   void setUp() {
@@ -49,8 +48,8 @@ public abstract class AbstractCharacterTest {
   }
 
   /**
-   * Auxiliary method created to test the constructor
-   *  of all the classes which implement an ICharacter.
+   * Auxiliary method created to test the constructor of all the classes which implement an
+   *  ICharacter.
    *
    * All the parameters explain their functionalities by themself.
    */
@@ -59,6 +58,7 @@ public abstract class AbstractCharacterTest {
       @NotNull final ICharacter sameClassDifferentCharacter,
       @NotNull final ICharacter differentClassCharacter
   ) {
+    assertEquals(testCharacter, testCharacter);
     assertEquals(testCharacter, expectedCharacter);
     /* equals */
     final var o = new Object();
@@ -70,8 +70,8 @@ public abstract class AbstractCharacterTest {
   }
 
   /**
-   * Test the constructor, the {@code equals()} and the {@code hashCode()} methods
-   *  of the sub-class of ICharacter, where it's implemented.
+   * Test the constructor, the {@code equals()} and the {@code hashCode()} methods of the sub-class
+   *  of ICharacter, where it's implemented.
    *
    * @see #checkConstruction(ICharacter, ICharacter, ICharacter)
    */ @Test
@@ -79,20 +79,27 @@ public abstract class AbstractCharacterTest {
 
   /**
    * Test {@code getAtk()} and {@code getWeight()} to see if they properly.
-   * In the case of a {@code IPlayableCharacter}, this method test if {@code equip(IWeapon)}
-   *  is consistence and returns Attack an Weight as it should.
+   * In the case of a {@code IPlayableCharacter}, this method test if {@code equip(IWeapon)} is
+   *  consistence and returns Attack an Weight as it should.
    *
    * @see AbstractCharacter#getAtk()
    * @see AbstractCharacter#getWeight()
    * @see AbstractPlayableCharacter#equip(IWeapon)
    */ @Test
-  protected abstract void getAtkAndWeightTest() throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+  protected abstract void getAtkAndWeightTest()
+      throws NonEquippedWeapon, NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+
+  /**
+   * Tests if the character answer properly to {@code .isPlayable()}.
+   */ @Test
+  protected abstract void isPlayableTest();
 
   /**
    * Let the {@code testCharacter} ready to use the {@code waitTurn()} and {@code getAtk()}
    *  without the possibility of failing.
    */
-  protected abstract void getReadyToPlay() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
+  protected abstract void getReadyToPlay()
+      throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
 
   /** The Character receives an attack such as powerful, to get K.O. */
   protected void defeatCharacter() {
@@ -103,9 +110,36 @@ public abstract class AbstractCharacterTest {
   }
 
   /**
+   * Test the {@code receiveAtk(int)} method of a character.
+   */ @Test
+  void receiveAtkTest() {
+    int expectedHp = testCharacter.getMaxHp();
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+    testCharacter.receiveAtk(testCharacter.getDef() - 1);
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+    testCharacter.receiveAtk(testCharacter.getDef());
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+    testCharacter.receiveAtk(-10);
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+
+    testCharacter.receiveAtk(testCharacter.getDef() + 3);
+    expectedHp = max(0, expectedHp - 3);
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+    testCharacter.receiveAtk(testCharacter.getDef() + 5);
+    expectedHp = max(0, expectedHp - 5);
+    assertEquals(expectedHp, testCharacter.getCurrentHp());
+
+    testCharacter.receiveAtk(testCharacter.getDef() + expectedHp);
+    assertEquals(0, testCharacter.getCurrentHp());
+    testCharacter.receiveAtk(20);
+    assertEquals(0, testCharacter.getCurrentHp());
+  }
+
+  /**
    * Test the {@code attack(ICharacter)} method of a character.
    */ @Test
-  void attackTest() throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon, NonEquippedWeapon {
+  void attackTest()
+      throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon, NonEquippedWeapon {
     assertEquals(testCharacter.getMaxHp(), testCharacter.getCurrentHp());
     assertEquals(attackedCharacter.getMaxHp(), attackedCharacter.getCurrentHp());
 
@@ -128,7 +162,7 @@ public abstract class AbstractCharacterTest {
 
     this.getReadyToPlay();
     /* getWeight() and waitTurn() should not to throw an exception. */
-    final int expectedWaitingTime = testCharacter.getWeight() * 10;  // divided by 10
+    final long expectedWaitingTime = (long) testCharacter.getWeight() * 10;  // divided by 10
     testCharacter.waitTurn();
 
     try {

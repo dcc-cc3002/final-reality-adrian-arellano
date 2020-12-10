@@ -4,10 +4,12 @@ import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizar
 import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * This class represents a Staff in the game.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
 public class Staff extends AbstractWeapon {
 
@@ -35,8 +37,20 @@ public class Staff extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Staff;
+  public int hashCode() {
+    return Objects.hash(getName(), getDamage(), getWeight(), Staff.class);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Staff)) {
+      return false;
+    }
+    final Staff that = (Staff) o;
+    return compareAttributes(that);
   }
 
 }

@@ -5,8 +5,6 @@ import com.github.cc3002.finalreality.model.character.playable.wizard.BlackWizar
 import com.github.cc3002.finalreality.model.character.playable.wizard.WhiteWizard;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 /**
  * An abstract class which implements the basic behaviour of a weapon in the game.
  *
@@ -56,15 +54,17 @@ public abstract class AbstractWeapon implements IWeapon {
     return currentCarrier;
   }
 
+  private void setCurrentCarrier(final IPlayableCharacter newCarrier) {
+    currentCarrier = newCarrier;
+  }
+
   @Override
   public void unEquippedBy(@NotNull final IPlayableCharacter supposedCarrier) throws
       UnexpectedBehavior {
-    /* It's not enough that the both characters were equals, they has to be exactly the same
-     * character (the same reference). */
-    if (supposedCarrier != currentCarrier) {
+    if (! supposedCarrier.equals(getCurrentCarrier())) {
       throw new UnexpectedBehavior("The suppose carrier is not the current carrier.");
     }
-    this.currentCarrier = null;
+    setCurrentCarrier(null);
   }
 
   /**
@@ -81,10 +81,10 @@ public abstract class AbstractWeapon implements IWeapon {
    */
   protected void availableToBeEquippedBy(@NotNull final IPlayableCharacter newCarrier) throws
       NonAvailableWeapon, UnexpectedBehavior {
-    if (this.currentCarrier != null) {
+    if (getCurrentCarrier() != null) {
       throw new NonAvailableWeapon();
     }
-    this.currentCarrier = newCarrier;
+    setCurrentCarrier(newCarrier);
     newCarrier.actuallyEquip(this);
   }
 
@@ -126,37 +126,18 @@ public abstract class AbstractWeapon implements IWeapon {
     error();
   }
 
-  @Override
-  public int hashCode() {
-    /* I think that the carrier must not affect this. */
-    return Objects.hash(getName(), getDamage(), getWeight(), this.getClass());
-  }
-
   /**
-   * Method created to complete the method {@code equals} of each IWeapon's sub-class.
+   * Compares the attributes of the given wizard with the attributes of this character, to know
+   *  if they are equals or not.
    *
-   * @param aWeapon : a candidate to be equals to this weapon.
+   * @param that : the given character to be compared.
    *
-   * @see #equals(Object o)
+   * @see #equals(Object)
    */
-  protected abstract boolean equalsAuxiliary(@NotNull final IWeapon aWeapon);
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof IWeapon)) {
-      return false;
-    }
-    final IWeapon that = (IWeapon) o;
-    /* Compares carriers, which could be null,
-     * so the matter is the memory allocated space. */
+  protected boolean compareAttributes(@NotNull final IWeapon that) {
     return getDamage() == that.getDamage() &&
         getWeight() == that.getWeight() &&
-        getName().equals(that.getName()) &&
-        getCurrentCarrier() == that.getCurrentCarrier() &&
-        this.equalsAuxiliary(that);
+        getName().equals(that.getName());
   }
 
 }

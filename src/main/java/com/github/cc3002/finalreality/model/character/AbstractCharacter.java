@@ -2,6 +2,7 @@ package com.github.cc3002.finalreality.model.character;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.beans.PropertyChangeSupport;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,6 +29,9 @@ public abstract class AbstractCharacter implements ICharacter {
 
   private int currentHealthPoints;
   private ScheduledExecutorService scheduledExecutor;
+
+  /* Observer Pattern : to subscribe as a listener the sub-Classes have their own methods. */
+  protected final PropertyChangeSupport koNotification = new PropertyChangeSupport(this);
 
   /**
    * Initializes the basic parameters for any character.
@@ -72,9 +76,35 @@ public abstract class AbstractCharacter implements ICharacter {
     return currentHealthPoints <= 0;
   }
 
+  @Override
+  public boolean isPlayable() {
+    return false;
+  }
+
   /** Sets the current health points of this character. */
   private void setHp(final int newHp) {
-    currentHealthPoints = min(maxHealthPoints, max(0, newHp));
+    currentHealthPoints = min(getMaxHp(), max(0, newHp));
+  }
+
+  /**
+   * Reduces the current health points of this character by the given amount, if that amount is
+   *  negative, then nothing happens.
+   * Every time that the HP is reduced, there is the possibility to knock out this character, in
+   *  that case, this method report a property change (using {@code koNotification}).
+   *
+   * @param reducePoints : the amount of points which will be discounted.
+   *
+   * @see com.github.cc3002.finalreality.controller.PlayableKoHandler for playable characters.
+   * @see com.github.cc3002.finalreality.controller.EnemyKoHandler for non playable characters
+   *                                                               (enemies).
+   */
+  private void reduceHp(final int reducePoints) {
+    setHp(getCurrentHp() - max(0, reducePoints));
+    if (isKo()) {
+      koNotification.firePropertyChange(
+          "A_CHARACTER_HAS_BEEN_DEFEATED", null, this
+      );
+    }
   }
 
   @Override
@@ -90,8 +120,8 @@ public abstract class AbstractCharacter implements ICharacter {
     if (isKo()){
       return;
     }
-    atkPower = max(0, atkPower - getDef());
-    setHp(getCurrentHp() - atkPower);
+    /* if the value is negative, .reduceHp() solve that problem. */
+    reduceHp(atkPower - getDef());
   }
 
   /** Adds this character to the turns queue. */
@@ -103,7 +133,7 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public void waitTurn() throws NonEquippedWeapon {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    scheduledExecutor.schedule(this::addToQueue, getWeight() * 100, TimeUnit.MILLISECONDS);
+    scheduledExecutor.schedule(this::addToQueue, (long) getWeight() * 100, TimeUnit.MILLISECONDS);
   }
 
   /**
@@ -115,9 +145,9 @@ public abstract class AbstractCharacter implements ICharacter {
    * @see #equals(Object)
    */
   protected boolean compareAttributes(@NotNull final ICharacter that) {
-    return getName().equals(that.getName()) &&
-        getMaxHp() == that.getMaxHp() &&
-        getDef() == that.getDef();
+    return getName().equals(that.getName())
+        && getMaxHp() == that.getMaxHp()
+        && getDef() == that.getDef();
   }
 
 }

@@ -5,13 +5,14 @@ import com.github.cc3002.finalreality.model.character.playable.Thief;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Class which initialize the parameters of a enemy
+ * Class which initializes the parameters of a enemy
  *  to execute the tests declared inside the super class.
  *
  * @author Adrian Arellano.
+ *
  * @see Enemy
  */
 class EnemyTest extends AbstractCharacterTest {
@@ -45,6 +46,11 @@ class EnemyTest extends AbstractCharacterTest {
   protected void getAtkAndWeightTest() throws NonEquippedWeapon {
     assertEquals(ENEMY_ATK,    testCharacter.getAtk());
     assertEquals(ENEMY_WEIGHT, testCharacter.getWeight());
+  }
+
+  @Override @Test
+  protected void isPlayableTest() {
+    assertFalse(testCharacter.isPlayable());
   }
 
   @Override

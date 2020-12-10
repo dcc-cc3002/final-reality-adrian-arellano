@@ -1,5 +1,6 @@
 package com.github.cc3002.finalreality.model.character.playable;
 
+import com.github.cc3002.finalreality.controller.PlayableKoHandler;
 import com.github.cc3002.finalreality.model.character.AbstractCharacter;
 import com.github.cc3002.finalreality.model.character.ICharacter;
 import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
@@ -55,6 +56,14 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
     return equippedWeapon;
   }
 
+  /**
+   * Allows a {@code EnemyKoHandler} subscribe itself to this publisher.
+   * We only let this kind of listener to subscribe, to have no problems with typing.
+   *//* Observer Pattern */
+  public void addPlayableKoListener(@NotNull final PlayableKoHandler listener) {
+    koNotification.addPropertyChangeListener(listener);
+  }
+
   @Override
   public int getAtk() throws NonEquippedWeapon {
     return advanceGetWeapon().getDamage();
@@ -63,6 +72,11 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
   @Override
   public int getWeight() throws NonEquippedWeapon {
     return advanceGetWeapon().getWeight();
+  }
+
+  @Override
+  public boolean isPlayable() {
+    return true;
   }
 
   @Override
@@ -86,9 +100,7 @@ public abstract class AbstractPlayableCharacter extends AbstractCharacter implem
     if (isKo()) {
       return;
     }
-    /* It's not enough that the both weapons were equals, they has to be exactly the same weapon
-     * (the same reference). */
-    if (aWeapon == equippedWeapon) {
+    if (this.equals(aWeapon.getCurrentCarrier())) {
       return;
     }
     equipAuxiliary(aWeapon);

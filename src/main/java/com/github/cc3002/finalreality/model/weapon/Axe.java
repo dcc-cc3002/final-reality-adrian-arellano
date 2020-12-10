@@ -4,10 +4,12 @@ import com.github.cc3002.finalreality.model.character.playable.Engineer;
 import com.github.cc3002.finalreality.model.character.playable.Knight;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * This class represents an Axe in the game.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
 public class Axe extends AbstractWeapon {
 
@@ -35,8 +37,20 @@ public class Axe extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Axe;
+  public int hashCode() {
+    return Objects.hash(getName(), getDamage(), getWeight(), Axe.class);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Axe)) {
+      return false;
+    }
+    final Axe that = (Axe) o;
+    return compareAttributes(that);
   }
 
 }
