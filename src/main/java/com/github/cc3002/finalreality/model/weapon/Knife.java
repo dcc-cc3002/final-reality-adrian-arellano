@@ -5,10 +5,12 @@ import com.github.cc3002.finalreality.model.character.playable.Knight;
 import com.github.cc3002.finalreality.model.character.playable.Thief;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * This class represents a Knife in the game.
  *
- * @author Adrian Arellano
+ * @author Adrian Arellano.
  */
 public class Knife extends AbstractWeapon {
 
@@ -42,8 +44,20 @@ public class Knife extends AbstractWeapon {
   }
 
   @Override
-  protected boolean equalsAuxiliary(@NotNull final IWeapon aWeapon) {
-    return aWeapon instanceof Knife;
+  public int hashCode() {
+    return Objects.hash(getName(), getDamage(), getWeight(), Knife.class);
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Knife)) {
+      return false;
+    }
+    final Knife that = (Knife) o;
+    return compareAttributes(that);
   }
 
 }

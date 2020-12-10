@@ -1,6 +1,7 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import com.github.cc3002.finalreality.model.character.ICharacter;
+import com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter;
 import com.github.cc3002.finalreality.model.character.playable.IPlayableCharacter;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Abstract class containing the common tests
- *  for all the types of weapons.
+ * Abstract class containing the common tests for all the types of weapons.
  *
  * @author Adrian Arellano.
  * @see IWeapon
@@ -30,14 +30,12 @@ public abstract class AbstractWeaponTest {
   protected static final BlockingQueue<ICharacter> turns = new LinkedBlockingQueue<>();
 
   /**
-   * Creates two IWeapon's and two ICharacter's,
-   *  which can equip those Sub-WeaponType.
+   * Creates two IWeapon's and two ICharacter's, which can equip those Sub-WeaponType.
    */ @BeforeEach
   protected abstract void setUp();
 
   /**
-   * Auxiliary method created to test the constructor
-   *  of all the classes which implement an IWeapon.
+   * Auxiliary method created to test the constructor of all the classes which implement an IWeapon.
    *
    * @see com.github.cc3002.finalreality.model.character.AbstractCharacterTest
    */
@@ -45,6 +43,7 @@ public abstract class AbstractWeaponTest {
       @NotNull final IWeapon expectedWeapon,
       @NotNull final IWeapon differentClassWeapon
   ) {
+    assertEquals(testWeapon1, testWeapon1);
     assertEquals(testWeapon1, expectedWeapon);
     /* equals */
     final var o = new Object();
@@ -63,13 +62,13 @@ public abstract class AbstractWeaponTest {
 
 
   /**
-   * Test the method {@code unEquippedBy(PlayableCharacter)}, which is used
-   *  used for the double dispatch of {@code equip(IWeapon)}, but the method
-   *  should not be called by any external object.
+   * Test the method {@code unEquippedBy(PlayableCharacter)}, which is used used for the double
+   *  dispatch of {@code equip(IWeapon)}, but the method should not be called by any external
+   *  object.
    * An example of an external object which could call this, would be the controller.
    *
    * @see AbstractWeapon#unEquippedBy(IPlayableCharacter)
-   * @see com.github.cc3002.finalreality.model.character.playable.AbstractPlayableCharacter#equip(IWeapon)
+   * @see AbstractPlayableCharacter#equip(IWeapon)
    */ @Test
   void misusedUnEquippedByTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
     final Exception e1 = assertThrows(UnexpectedBehavior.class,
@@ -85,32 +84,8 @@ public abstract class AbstractWeaponTest {
 
     /* From now on the PlayableCharacters are needed */
 
-
   /**
-   * Auxiliary method created to be run by {@link #differentHolderTest()}
-   *  inside all the classes which implement an IWeapon.
-   */
-  protected void checkHolder(@NotNull final IWeapon copyOfTestWeapon1) throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
-    /* The weapons are equals, but they don't have the same memory location. */
-    assertEquals(copyOfTestWeapon1, testWeapon1);
-    assertNotSame(copyOfTestWeapon1, testWeapon1);
-
-    sampleCharacter1.equip(testWeapon1);
-    assertNotEquals(copyOfTestWeapon1, testWeapon1);
-    sampleCharacter2.equip(copyOfTestWeapon1);
-    assertNotEquals(copyOfTestWeapon1, testWeapon1);
-  }
-
-  /**
-   * Test the concept that if two weapons looks the same,
-   *  but they are held by different Character's, then they
-   *  are not the same weapon.
-   */ @Test
-  protected abstract void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior;
-
-  /**
-   * Test the concept that a weapon
-   *  can be held by only one Character a time.
+   * Test the concept that a weapon can be held by only one Character a time.
    */ @Test
   void oneCarrierTest() throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     sampleCharacter1.equip(testWeapon1);

@@ -1,7 +1,9 @@
 package com.github.cc3002.finalreality.model.character;
 
+import com.github.cc3002.finalreality.controller.EnemyKoHandler;
 import org.jetbrains.annotations.NotNull;
 
+import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
@@ -34,6 +36,14 @@ public class Enemy extends AbstractCharacter {
     this.weight = weight;
   }
 
+  /**
+   * Allows a {@code EnemyKoHandler} subscribe itself to this publisher.
+   * We only let this kind of listener to subscribe, to have no problems with typing.
+   *//* Observer Pattern */
+  public void addEnemyKoListener(@NotNull final EnemyKoHandler listener) {
+    koNotification.addPropertyChangeListener(listener);
+  }
+
   @Override
   public int getAtk() {
     return attack;
@@ -58,9 +68,9 @@ public class Enemy extends AbstractCharacter {
       return false;
     }
     final Enemy that = (Enemy) o;
-    return compareAttributes(that) &&
-        getAtk() == that.getAtk() &&
-        getWeight() == that.getWeight();
+    return compareAttributes(that)
+        && getAtk() == that.getAtk()
+        && getWeight() == that.getWeight();
   }
 
 }

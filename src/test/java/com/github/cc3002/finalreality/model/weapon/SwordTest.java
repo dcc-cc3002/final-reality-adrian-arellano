@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class which initialize the parameters of a Sword
- *  to execute the tests declared inside the super class.
+ * Class which initialize the parameters of a Sword to execute the tests declared inside the super
+ *  class.
  *
  * @author Adrian Arellano.
  * @see Sword
@@ -33,11 +33,6 @@ class SwordTest extends AbstractWeaponTest {
         new Sword(SWORD_NAME, DAMAGE, WEIGHT),
         new Staff(SWORD_NAME, DAMAGE, WEIGHT)
     );
-  }
-
-  @Override @Test
-  protected void differentHolderTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior {
-    checkHolder(new Sword(SWORD_NAME, DAMAGE, WEIGHT));
   }
 
 }

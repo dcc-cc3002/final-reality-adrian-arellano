@@ -13,8 +13,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Abstract class containing the common tests
- *  for all the types of playable characters.
+ * Abstract class containing the common tests for all the types of playable characters.
  *
  * @author Adrian Arellano.
  * @see IPlayableCharacter
@@ -27,20 +26,16 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   private static final Map<String, IWeapon> weaponsSample = new HashMap<>();
 
   /**
-   * Saves in the variable: {@param equippableWeapons},
-   *  a Set with the name of the type of each kind of
-   *  weapon which can be equipped by this
-   *   IPlayableCharacter's sub-type.
+   * Saves in the variable: {@param equippableWeapons}, a Set with the name of the type of each kind
+   *  of weapon which can be equipped by this IPlayableCharacter's sub-type.
    */
   protected abstract void setUpEquippableWeapons();
 
   /**
-   * Creates every kind of IWeapon {@param weaponSample}
-   *  and two different PlayableCharacter's of the
-   *  current sub type.
-   * Also initializes the {@param equippableWeapons} which
-   *  has a String with the name of each equippable weapon
-   *  for this sub-PlayableCharacterType.
+   * Creates every kind of IWeapon {@param weaponSample} and two different PlayableCharacter's of
+   *  the current sub type.
+   * Also initializes the {@param equippableWeapons} which has a String with the name of each
+   *  equippable weapon for this sub-PlayableCharacterType.
    */ @BeforeEach
   protected void setUp() {
     super.setUp();
@@ -59,21 +54,22 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   }
 
   /**
-   * Test that this Sub-PlayableCharacterType can only equip
-   *  the weapons pointed out inside {@code equippableWeapons}.
+   * Test that this Sub-PlayableCharacterType can only equip the weapons pointed out inside
+   *  {@code equippableWeapons}.
    *
-   *    This method should not raise any exceptions.
+   * This method should not raise any exceptions.
    */ @Test
   void equipWeaponTest1() throws UnsupportedWeapon, NonAvailableWeapon, UnexpectedBehavior {
     for (String weaponType : weaponsSample.keySet()) {
-      IWeapon aWeapon = weaponsSample.get(weaponType);
+      final IWeapon aWeapon = weaponsSample.get(weaponType);
 
       if (equippableWeapons.contains(weaponType)) {
         testPlayableCharacter.equip(aWeapon);
         assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon());
-      } else {  /* The exception should occur. */
+      }
+      else {  /* The exception should occur. */
         assertThrows(UnsupportedWeapon.class,
-            () -> testPlayableCharacter.equip(aWeapon));
+            () -> testPlayableCharacter.equip(aWeapon), "the exception was not thrown.");
       }
     }
   }
@@ -92,7 +88,8 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
   }
 
   @Override @Test
-  protected void getAtkAndWeightTest() throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior, NonEquippedWeapon {
+  protected void getAtkAndWeightTest()
+      throws NonAvailableWeapon, UnsupportedWeapon, UnexpectedBehavior, NonEquippedWeapon {
     assertThrows(NonEquippedWeapon.class,
         () -> testCharacter.getAtk());
     assertThrows(NonEquippedWeapon.class,
@@ -106,10 +103,16 @@ public abstract class AbstractPlayableCharacterTest extends AbstractCharacterTes
     final IWeapon aWeapon = weaponsSample.get(equippableWeapons.iterator().next());
     testPlayableCharacter.equip(aWeapon);
     assertEquals(aWeapon, testPlayableCharacter.getEquippedWeapon(),
-        "The weapon was not equipped. The current weapon is: " + testPlayableCharacter.getEquippedWeapon());
+        "The weapon was not equipped. The current weapon is: " +
+            testPlayableCharacter.getEquippedWeapon());
 
     assertEquals(aWeapon.getDamage(), testCharacter.getAtk());
     assertEquals(aWeapon.getWeight(), testCharacter.getWeight());
+  }
+
+  @Override @Test
+  protected void isPlayableTest() {
+    assertTrue(testCharacter.isPlayable());
   }
 
   @Override

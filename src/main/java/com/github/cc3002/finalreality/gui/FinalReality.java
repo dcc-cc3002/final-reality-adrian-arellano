@@ -24,7 +24,7 @@ public class FinalReality extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Final reality");
 
-    Label label = new Label("This will be a game sometime");
+    Label label = new Label("This will be a game in the future.");
     label.setAlignment(Pos.CENTER);
 
     // This sets the size of the Scene to be 400px wide, 200px high

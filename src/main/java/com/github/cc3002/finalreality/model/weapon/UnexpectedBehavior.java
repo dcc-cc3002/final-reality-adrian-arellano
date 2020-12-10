@@ -3,9 +3,11 @@ package com.github.cc3002.finalreality.model.weapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Exception which is thrown when any part of the program
- *  does not expected to be used as it is been used.
+ * Exception which is thrown when any part of the program does not expected to be used as it is been
+ *  used.
  * In other words: when some method is misused.
+ *
+ * @author Adrian Arellano.
  */
 public class UnexpectedBehavior extends Exception {
 

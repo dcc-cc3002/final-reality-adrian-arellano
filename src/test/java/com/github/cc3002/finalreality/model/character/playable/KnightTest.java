@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Class which initialize the parameters of a knight
- *  to execute the tests declared inside the super classes.
+ * Class which initialize the parameters of a knight to execute the tests declared inside the super
+ *  classes.
  *
  * @author Adrian Arellano.
  * @see Knight

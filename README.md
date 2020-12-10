@@ -16,14 +16,11 @@ enemies controlled by the computer.
 
 ---
 
-Important for the _Tarea 1_
+Important for the _Tarea 2_
 ---------------------------
 
-###Test Inheritance
-This project has test inheritance, and according to the _foro_, that will give some points to this evaluation.
-
 ###_Entregas Parciales_
-The both _entregas parciales_ were made, so that should be considered to the assigned points of this _Tarea_.
+The first two _entregas parciales_ were made, so that should be considered to the assigned points of this _Tarea_.
 
 
 The Program
@@ -36,6 +33,8 @@ The Program
 and Bows (Knives instead of Staffs).
 
 - We assume that a Weapon can be equipped by only one character a time.
+
+- We assume that once a character is K.O., it can not be taken out of that state.
 
 - By now, the rest of the functionalities should be like the _Descripción del Proyecto_ says.
 
@@ -55,24 +54,31 @@ The current working functionalities are:
 > Equip a weapon to a playable character (the process gets done only if the weapon is not
 in the hands of another character, and the weapon can be equipped by that kind of character).
 
+In addition to that, the _Tarea 2_ implements the next functionalities.
+
+> The Controller!
+
+> The classes: CharacterCode and WeaponCode which can be used (in the future) by the view to identify
+> a Character, or a Weapon (respectively) without having access to the model itself.
+
+> The general functionalities of the controller, like, know if the game has ended, know who won (the
+> player or the enemies), identifies the elements of the game and know their _public_ attributes, equip
+> a weapon from the view, handle the turns of the game, make an enemy to play it turn by itself, and
+> a little more.
+
+> Some of these functionalities were added using the Observer Pattern, or the Factory Pattern. (Other
+> Patterns were used too).
+
 ---
 
 How to know it works?
 ---------------------
 
-The model is the unique programed part (by now), so if you want to realize that te code works,
-you should see at least the abstract classes of the main and the test folder, and the interfaces
-to know the programed objects.
-
-After that you should have an idea of the thing that each Interface can do, so now you can see the test
-and understand the things that are been tested.
-
-Finally, to see that the program passes the test, and the coverage of the test, you could do the next:
-
-I created a test suite with gradle!, so if you are using Intellij, after the project was build
-successfully, you could see, in the up right corner, a test suite prepared to be run with coverage.
-
-Then Intellij will work, and you will know the coverage of every class which I made.
+For now the view part does not exist so, the only way to know if this project is working properly, is
+to watch the tests, understand what is happening (for the controller part is very important to have 
+in consideration the idea of the classes CharacterCode an WeaponCode), and once the test are understood
+running the tests and having only successful test should be enough to know that the program is working
+mostly good.
 
 ---
 
