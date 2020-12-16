@@ -63,6 +63,10 @@ public class GameController {
   private final PlayableKoHandler playableKoHandler = new PlayableKoHandler(this);
 
 
+  /* State Pattern */
+  private GamePhase currentPhase = new Phase0(this);
+
+
   private static final byte THE_PLAYER_WINS = 1;
   private static final byte THE_PLAYER_LOSES = 2;
 
@@ -121,10 +125,13 @@ public class GameController {
 
   /* Hard Methods : BEGIN */
 
-  /** Ends the turn of the current {@code turnOwner}, resetting each associated variable. */
-  private void endTurn() {
+  /**
+   * Ends the turn of the current {@code turnOwner}, resetting each associated variable.
+   *//* package private : to be used on the test */
+  void endTurn() {
     turnOwner = null;
     turnOwnerCode = null;
+    currentPhase.nextPhase();
   }
 
   /**
@@ -136,12 +143,13 @@ public class GameController {
    *  next element with timer is available.
    */
   public void updateTurnOwner() throws InterruptedException {
-    endTurn();
+    currentPhase.nextPlayer();
     do {
       turnOwner = turnsQueue.poll(TIME_OUT_IN_SECONDS, TimeUnit.SECONDS);
       if (turnOwner == null) return;
     } while (turnOwner.isKo());
     turnOwnerCode = charactersCode.inverse().get(turnOwner);
+    currentPhase.nextPhase();
   }
 
   /**
@@ -154,6 +162,9 @@ public class GameController {
    */
   public void equipWeapon(@NotNull final WeaponCode weaponCode)
       throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon {
+    if (! (currentPhase.isPhase(2))) {
+      return;
+    }
     final IWeapon aWeapon = weaponsCode.get(weaponCode);
     final IPlayableCharacter playableTurnOwner = playableCharactersCode.get(turnOwnerCode);
     playableTurnOwner.equip(aWeapon);
@@ -170,6 +181,9 @@ public class GameController {
    */
   public void characterAttacksTo(@NotNull final CharacterCode attackedCode)
       throws NonEquippedWeapon {
+    if (! (currentPhase.isPhase(2))) {
+      return;
+    }
     final ICharacter attacked = charactersCode.get(attackedCode);
     turnOwner.attack(attacked);
     turnOwner.waitTurn();
@@ -199,6 +213,19 @@ public class GameController {
   }
 
   /* Hard Methods : END */
+
+
+  /* State Pattern : BEGIN */
+
+  /**
+   * Updates the current phase of the game.
+   *//* package private */
+  void setCurrentPhase(@NotNull final GamePhase newPhase) {
+    currentPhase = newPhase;
+    currentPhase.setGameController(this);
+  }
+
+  /* State Pattern : END */
 
 
   /*##########################*/

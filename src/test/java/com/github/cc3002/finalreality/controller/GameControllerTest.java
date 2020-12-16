@@ -212,20 +212,27 @@ class GameControllerTest {
 
     controller.updateTurnOwner();
     assertEquals(engineer, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(knight, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(thief, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(blackWizard, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(whiteWizard, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(enemy1, controller.getTurnOwner());
+    controller.endTurn();
     controller.updateTurnOwner();
     assertEquals(enemy2, controller.getTurnOwner());
 
     // Time Out
+    controller.endTurn();
     controller.updateTurnOwner();
     assertNull(controller.getTurnOwner());
   }
@@ -243,7 +250,9 @@ class GameControllerTest {
     assertThrows(UnsupportedWeapon.class, () -> controller.equipWeapon(staff));
     assertThrows(UnsupportedWeapon.class, () -> controller.equipWeapon(sword));
 
+    controller.endTurn();
     controller.updateTurnOwner();
+    controller.endTurn();
     controller.updateTurnOwner();
     assertThrows(UnsupportedWeapon.class, () -> controller.equipWeapon(axe));
     assertThrows(NonAvailableWeapon.class, () -> controller.equipWeapon(bow));
@@ -293,6 +302,7 @@ class GameControllerTest {
 
     // Last member of the party
     controller.updateTurnOwner();
+    controller.endTurn();
     controller.updateTurnOwner();
 
     /* The enemy 1 is K.O. so there is no turn for it. */
@@ -315,7 +325,9 @@ class GameControllerTest {
   void enemyTurnTest() throws CharacterAlreadyCreated, NonEquippedWeapon, InterruptedException {
     final CharacterCode onePunchMan = controller.createAnEnemy("One Punch Man",
         100, 100, 1000000, 0);
+    controller.updateTurnOwner();
     while (! (onePunchMan.equals(controller.getTurnOwner()))) {
+      controller.endTurn();
       controller.updateTurnOwner();
     }
     controller.enemyTurn();
