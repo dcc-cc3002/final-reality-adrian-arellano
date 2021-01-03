@@ -1,5 +1,9 @@
 package com.github.cc3002.finalreality.controller;
 
+import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
+import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
+import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
+import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -13,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GamePhase {
 
-  private GameController controller;
+  protected GameController controller;
 
   /**
    * Sets the controller for the current GamePhase.
@@ -51,6 +55,17 @@ public class GamePhase {
    *  (Phase1).
    */
   public void nextPlayer() {
+    error();
+  }
+
+  /* package private */
+  void tryToEquipWeapon(@NotNull final WeaponCode weaponCode)
+      throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon {
+    error();
+  }
+
+  /* package private */
+  void tryToAttackTo(@NotNull final CharacterCode attackedCode) throws NonEquippedWeapon {
     error();
   }
 

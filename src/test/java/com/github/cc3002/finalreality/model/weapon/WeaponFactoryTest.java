@@ -3,7 +3,7 @@ package com.github.cc3002.finalreality.model.weapon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
+// import java.util.HashSet;
 // import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +35,7 @@ class WeaponFactoryTest {
    * Initializes every variable to run properly the test suite of this class.
    * This should not throw an exception.
    */ @BeforeEach
-  void setUp() throws WeaponAlreadyCreated {
+  void setUp() {
     // inventory = new HashSet<>();
 
     testedFactory = new WeaponFactory();
@@ -61,23 +61,12 @@ class WeaponFactoryTest {
   /**
    * Tests if the factory throws an exception when we try to create a character we already create.
    */ @Test
-  void createThrowExceptionTest() {
-    Exception e;
-    e = assertThrows(WeaponAlreadyCreated.class,
-        () -> testedFactory.createAnAxe(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
-    assertEquals(WEAPON_NAME, e.getMessage());
-    e = assertThrows(WeaponAlreadyCreated.class,
-        () -> testedFactory.createABow(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
-    assertEquals(WEAPON_NAME, e.getMessage());
-    e = assertThrows(WeaponAlreadyCreated.class,
-        () -> testedFactory.createAKnife(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
-    assertEquals(WEAPON_NAME, e.getMessage());
-    e = assertThrows(WeaponAlreadyCreated.class,
-        () -> testedFactory.createAStaff(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
-    assertEquals(WEAPON_NAME, e.getMessage());
-    e = assertThrows(WeaponAlreadyCreated.class,
-        () -> testedFactory.createASword(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
-    assertEquals(WEAPON_NAME, e.getMessage());
+  void createNullTest() {
+    assertNull(testedFactory.createAnAxe(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
+    assertNull(testedFactory.createABow(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
+    assertNull(testedFactory.createAKnife(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
+    assertNull(testedFactory.createAStaff(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
+    assertNull(testedFactory.createASword(WEAPON_NAME, WEAPON_DAMAGE, WEAPON_WEIGHT));
    }
 
   /*/**

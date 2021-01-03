@@ -49,7 +49,7 @@ class CharacterFactoryTest {
    * Initializes every variable to run properly the test suite of this class.
    * This should not throw an exception.
    */ @BeforeEach
-  void setUp() throws CharacterAlreadyCreated {
+  void setUp() {
     turnsQueue = new LinkedBlockingQueue<>();
     characters = new HashMap<>();
     enemies = new HashMap<>();
@@ -86,30 +86,17 @@ class CharacterFactoryTest {
   /**
    * Tests if the factory throws an exception when we try to create a character we already create.
    */ @Test
-  void createThrowExceptionTest() {
-    Exception e;
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createAnEngineer(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
-    assertEquals("Dummy", e.getMessage());
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createAKnight(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
-    assertEquals("Dummy", e.getMessage());
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createAThief(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
-    assertEquals("Dummy", e.getMessage());
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createABlackWizard(CHARACTER_NAME, CHARACTER_MAX_HP,
-            CHARACTER_MAX_MANA, CHARACTER_DEF));
-    assertEquals("Dummy", e.getMessage());
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createAWhiteWizard(CHARACTER_NAME, CHARACTER_MAX_HP,
-            CHARACTER_MAX_MANA, CHARACTER_DEF));
-    assertEquals("Dummy", e.getMessage());
-    e = assertThrows(CharacterAlreadyCreated.class,
-        () -> testedFactory.createAnEnemy(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_ATK,
+  void createNullTest() {
+    assertNull(testedFactory.createAnEngineer(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
+    assertNull(testedFactory.createAKnight(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
+    assertNull(testedFactory.createAThief(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_DEF));
+    assertNull(testedFactory.createABlackWizard(CHARACTER_NAME, CHARACTER_MAX_HP,
+        CHARACTER_MAX_MANA, CHARACTER_DEF));
+    assertNull(testedFactory.createAWhiteWizard(CHARACTER_NAME, CHARACTER_MAX_HP,
+        CHARACTER_MAX_MANA, CHARACTER_DEF));
+    assertNull(testedFactory.createAnEnemy(CHARACTER_NAME, CHARACTER_MAX_HP, CHARACTER_ATK,
             CHARACTER_DEF, CHARACTER_WEIGHT));
-    assertEquals("Dummy", e.getMessage());
-  }
+   }
 
   /**
    * Tests if the input maps were actually modifies, and contains only the added characters, nothing

@@ -30,14 +30,10 @@ public class WeaponFactory {
    *
    * @param newWeapon : the weapon to add.
    *
-   * @throws WeaponAlreadyCreated : when the given character was present in {@code inventory}.
+   * @return True if the weapon was not created before, an false if it was.
    */
-  private void addWeapon(@NotNull final IWeapon newWeapon)
-      throws WeaponAlreadyCreated {
-
-    if (! (inventory.add(newWeapon))) {
-      throw new WeaponAlreadyCreated(newWeapon.getName());
-    }
+  private boolean addWeapon(@NotNull final IWeapon newWeapon) {
+    return inventory.add(newWeapon);
   }
 
   /**
@@ -46,11 +42,12 @@ public class WeaponFactory {
    *
    * @see #addWeapon(IWeapon)
    */
-  public Axe createAnAxe(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public Axe createAnAxe(@NotNull final String name, final int damage, final int weight) {
     Axe newAxe = new Axe(name, damage, weight);
-    addWeapon(newAxe);
-    return newAxe;
+    if (addWeapon(newAxe)) {
+      return newAxe;
+    }
+    return null;
   }
 
   /**
@@ -59,11 +56,12 @@ public class WeaponFactory {
    *
    * @see #addWeapon(IWeapon)
    */
-  public Bow createABow(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public Bow createABow(@NotNull final String name, final int damage, final int weight) {
     Bow newBow = new Bow(name, damage, weight);
-    addWeapon(newBow);
-    return newBow;
+    if (addWeapon(newBow)) {
+      return newBow;
+    }
+    return null;
   }
 
   /**
@@ -72,11 +70,12 @@ public class WeaponFactory {
    *
    * @see #addWeapon(IWeapon)
    */
-  public Knife createAKnife(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public Knife createAKnife(@NotNull final String name, final int damage, final int weight) {
     Knife newKnife = new Knife(name, damage, weight);
-    addWeapon(newKnife);
-    return newKnife;
+    if (addWeapon(newKnife)) {
+      return newKnife;
+    }
+    return null;
   }
 
   /**
@@ -85,11 +84,12 @@ public class WeaponFactory {
    *
    * @see #addWeapon(IWeapon)
    */
-  public Staff createAStaff(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public Staff createAStaff(@NotNull final String name, final int damage, final int weight) {
     Staff newStaff = new Staff(name, damage, weight);
-    addWeapon(newStaff);
-    return newStaff;
+    if (addWeapon(newStaff)) {
+      return newStaff;
+    }
+    return null;
   }
 
   /**
@@ -98,11 +98,12 @@ public class WeaponFactory {
    *
    * @see #addWeapon(IWeapon)
    */
-  public Sword createASword(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public Sword createASword(@NotNull final String name, final int damage, final int weight) {
     Sword newSword = new Sword(name, damage, weight);
-    addWeapon(newSword);
-    return newSword;
+    if (addWeapon(newSword)) {
+      return newSword;
+    }
+    return null;
   }
 
 }

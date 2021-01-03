@@ -162,9 +162,12 @@ public class GameController {
    */
   public void equipWeapon(@NotNull final WeaponCode weaponCode)
       throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon {
-    if (! (currentPhase.isPhase(2))) {
-      return;
-    }
+    currentPhase.tryToEquipWeapon(weaponCode);
+  }
+
+  /* package private */
+  void tryToEquipWeapon(@NotNull final WeaponCode weaponCode)
+      throws UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon {
     final IWeapon aWeapon = weaponsCode.get(weaponCode);
     final IPlayableCharacter playableTurnOwner = playableCharactersCode.get(turnOwnerCode);
     playableTurnOwner.equip(aWeapon);
@@ -181,9 +184,11 @@ public class GameController {
    */
   public void characterAttacksTo(@NotNull final CharacterCode attackedCode)
       throws NonEquippedWeapon {
-    if (! (currentPhase.isPhase(2))) {
-      return;
-    }
+    currentPhase.tryToAttackTo(attackedCode);
+  }
+
+  /* package private */
+  void tryToAttackTo(@NotNull final CharacterCode attackedCode) throws NonEquippedWeapon {
     final ICharacter attacked = charactersCode.get(attackedCode);
     turnOwner.attack(attacked);
     turnOwner.waitTurn();
@@ -196,7 +201,7 @@ public class GameController {
    *  alive.
    * If all goes good, the turn ends and we are going to be ready to the next turn.
    */
-  public void enemyTurn() throws NonEquippedWeapon {
+  public CharacterCode enemyTurn() throws NonEquippedWeapon {
     final Set<CharacterCode> available = getParty();
     CharacterCode target = null;
     int randomIndex = new Random().nextInt(available.size());
@@ -210,6 +215,7 @@ public class GameController {
     if (target != null) {
       characterAttacksTo(target);
     }
+    return  target;
   }
 
   /* Hard Methods : END */
@@ -223,6 +229,11 @@ public class GameController {
   void setCurrentPhase(@NotNull final GamePhase newPhase) {
     currentPhase = newPhase;
     currentPhase.setGameController(this);
+  }
+
+  /* package private */
+  GamePhase getCurrentPhase() {
+    return currentPhase;
   }
 
   /* State Pattern : END */
@@ -395,12 +406,15 @@ public class GameController {
   /**
    * Creates a new Engineer, with the typical parameters, taking care that it was not created
    *  before.
+   * The Playable Characters can only be created before start the game ({@code Phase0}).
    *
    * @see #initializePlayable(IPlayableCharacter)
    */
   public CharacterCode createAnEngineer(@NotNull final String name, final int maxHealthPoints,
-                                        final int defense) throws CharacterAlreadyCreated {
-
+                                        final int defense) {
+    if (! (currentPhase.isPhase(0))) {
+      return null;
+    }
     final Engineer aCharacter = characterFactory.createAnEngineer(name, maxHealthPoints, defense);
     return initializePlayable(aCharacter);
   }
@@ -408,12 +422,15 @@ public class GameController {
   /**
    * Creates a new Knight, with the typical parameters, taking care that it was not created
    *  before.
+   * The Playable Characters can only be created before start the game ({@code Phase0}).
    *
    * @see #initializePlayable(IPlayableCharacter)
    */
   public CharacterCode createAKnight(@NotNull final String name, final int maxHealthPoints,
-                                     final int defense) throws CharacterAlreadyCreated {
-
+                                     final int defense) {
+    if (! (currentPhase.isPhase(0))) {
+      return null;
+    }
     final Knight aCharacter = characterFactory.createAKnight(name, maxHealthPoints, defense);
     return initializePlayable(aCharacter);
   }
@@ -421,12 +438,15 @@ public class GameController {
   /**
    * Creates a new Thief, with the typical parameters, taking care that it was not created
    *  before.
+   * The Playable Characters can only be created before start the game ({@code Phase0}).
    *
    * @see #initializePlayable(IPlayableCharacter)
    */
   public CharacterCode createAThief(@NotNull final String name, final int maxHealthPoints,
-                                    final int defense) throws CharacterAlreadyCreated {
-
+                                    final int defense) {
+    if (! (currentPhase.isPhase(0))) {
+      return null;
+    }
     final Thief aCharacter = characterFactory.createAThief(name, maxHealthPoints, defense);
     return initializePlayable(aCharacter);
   }
@@ -434,13 +454,15 @@ public class GameController {
   /**
    * Creates a new Black Wizard, with the typical parameters, taking care that it was not created
    *  before.
+   * The Playable Characters can only be created before start the game ({@code Phase0}).
    *
    * @see #initializeWizard(IWizard)
    */
   public CharacterCode createABlackWizard(@NotNull final String name, final int maxHealthPoints,
-                                          final int maxMana, final int defense)
-      throws CharacterAlreadyCreated {
-
+                                          final int maxMana, final int defense) {
+    if (! (currentPhase.isPhase(0))) {
+      return null;
+    }
     final BlackWizard aCharacter =
         characterFactory.createABlackWizard(name, maxHealthPoints, maxMana, defense);
     return initializeWizard(aCharacter);
@@ -449,13 +471,15 @@ public class GameController {
   /**
    * Creates a new White Wizard, with the typical parameters, taking care that it was not created
    *  before.
+   * The Playable Characters can only be created before start the game ({@code Phase0}).
    *
    * @see #initializeWizard(IWizard)
    */
   public CharacterCode createAWhiteWizard(@NotNull final String name, final int maxHealthPoints,
-                                          final int maxMana, final int defense)
-      throws CharacterAlreadyCreated {
-
+                                          final int maxMana, final int defense) {
+    if (! (currentPhase.isPhase(0))) {
+      return null;
+    }
     final WhiteWizard aCharacter =
         characterFactory.createAWhiteWizard(name, maxHealthPoints, maxMana, defense);
     return initializeWizard(aCharacter);
@@ -468,8 +492,7 @@ public class GameController {
    * @see #initializeEnemy(Enemy)
    */
   public CharacterCode createAnEnemy(@NotNull final String name, final int maxHealthPoints,
-                                     final int defense, final int attack, final int weight)
-      throws CharacterAlreadyCreated {
+                                     final int defense, final int attack, final int weight) {
 
     final Enemy aCharacter =
         characterFactory.createAnEnemy(name, maxHealthPoints, defense, attack, weight);
@@ -561,8 +584,7 @@ public class GameController {
    *
    * @see #addWeaponCodification(IWeapon)
    */
-  public WeaponCode createAnAxe(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public WeaponCode createAnAxe(@NotNull final String name, final int damage, final int weight) {
     final Axe aWeapon = weaponFactory.createAnAxe(name, damage, weight);
     return addWeaponCodification(aWeapon);
   }
@@ -572,8 +594,7 @@ public class GameController {
    *
    * @see #addWeaponCodification(IWeapon)
    */
-  public WeaponCode createABow(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public WeaponCode createABow(@NotNull final String name, final int damage, final int weight) {
     final Bow aWeapon = weaponFactory.createABow(name, damage, weight);
     return addWeaponCodification(aWeapon);
   }
@@ -583,8 +604,7 @@ public class GameController {
    *
    * @see #addWeaponCodification(IWeapon)
    */
-  public WeaponCode createAKnife(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public WeaponCode createAKnife(@NotNull final String name, final int damage, final int weight) {
     final Knife aWeapon = weaponFactory.createAKnife(name, damage, weight);
     return addWeaponCodification(aWeapon);
   }
@@ -594,8 +614,7 @@ public class GameController {
    *
    * @see #addWeaponCodification(IWeapon)
    */
-  public WeaponCode createAStaff(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public WeaponCode createAStaff(@NotNull final String name, final int damage, final int weight) {
     final Staff aWeapon = weaponFactory.createAStaff(name, damage, weight);
     return addWeaponCodification(aWeapon);
   }
@@ -605,8 +624,7 @@ public class GameController {
    *
    * @see #addWeaponCodification(IWeapon)
    */
-  public WeaponCode createASword(@NotNull final String name, final int damage, final int weight)
-      throws WeaponAlreadyCreated {
+  public WeaponCode createASword(@NotNull final String name, final int damage, final int weight) {
     final Sword aWeapon = weaponFactory.createASword(name, damage, weight);
     return addWeaponCodification(aWeapon);
   }
