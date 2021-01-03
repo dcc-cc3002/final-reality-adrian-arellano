@@ -47,14 +47,11 @@ public class CharacterFactory {
    *
    * @param newCharacter : the character to add.
    *
-   * @throws CharacterAlreadyCreated : when the given character was present in {@code characters}.
+   * @return True if the character was not created before, an false if it was.
    */
-  private void addPlayableCharacter(@NotNull final IPlayableCharacter newCharacter)
-      throws CharacterAlreadyCreated {
+  private boolean addPlayableCharacter(@NotNull final IPlayableCharacter newCharacter) {
 
-    if (playableCharacters.putIfAbsent(newCharacter, false) != null) {
-      throw new CharacterAlreadyCreated(newCharacter.getName());
-    }
+    return playableCharacters.putIfAbsent(newCharacter, false) == null;
   }
 
   /**
@@ -64,11 +61,13 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter)
    */
   public Engineer createAnEngineer(@NotNull final String name, final int maxHealthPoints,
-                                   final int defense) throws CharacterAlreadyCreated {
+                                   final int defense) {
 
     final Engineer newEngineer = new Engineer(name, maxHealthPoints, defense, turnsQueue);
-    addPlayableCharacter(newEngineer);
-    return newEngineer;
+    if (addPlayableCharacter(newEngineer)) {
+      return newEngineer;
+    }
+    return null;
   }
 
   /**
@@ -78,11 +77,13 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter)
    */
   public Knight createAKnight(@NotNull final String name, final int maxHealthPoints,
-                              final int defense) throws CharacterAlreadyCreated {
+                              final int defense) {
 
     final Knight newKnight = new Knight(name, maxHealthPoints, defense, turnsQueue);
-    addPlayableCharacter(newKnight);
-    return newKnight;
+    if (addPlayableCharacter(newKnight)) {
+      return newKnight;
+    }
+    return null;
   }
 
   /**
@@ -92,11 +93,13 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter)
    */
   public Thief createAThief(@NotNull final String name, final int maxHealthPoints,
-                            final int defense) throws CharacterAlreadyCreated {
+                            final int defense) {
 
     final Thief newThief = new Thief(name, maxHealthPoints, defense, turnsQueue);
-    addPlayableCharacter(newThief);
-    return newThief;
+    if (addPlayableCharacter(newThief)) {
+      return newThief;
+    }
+    return null;
   }
 
   /**
@@ -106,13 +109,14 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter)
    */
   public BlackWizard createABlackWizard(@NotNull final String name, final int maxHealthPoints,
-                                        final int maxMana, final int defense)
-      throws CharacterAlreadyCreated {
+                                        final int maxMana, final int defense) {
 
     final BlackWizard newBlackWizard =
         new BlackWizard(name, maxHealthPoints, maxMana, defense, turnsQueue);
-    addPlayableCharacter(newBlackWizard);
-    return newBlackWizard;
+    if (addPlayableCharacter(newBlackWizard)) {
+      return newBlackWizard;
+    }
+    return null;
   }
 
   /**
@@ -122,13 +126,14 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter)
    */
   public WhiteWizard createAWhiteWizard(@NotNull final String name, final int maxHealthPoints,
-                                        final int maxMana, final int defense)
-      throws CharacterAlreadyCreated {
+                                        final int maxMana, final int defense) {
 
     final WhiteWizard newWhiteWizard =
         new WhiteWizard(name, maxHealthPoints, maxMana, defense, turnsQueue);
-    addPlayableCharacter(newWhiteWizard);
-    return newWhiteWizard;
+    if (addPlayableCharacter(newWhiteWizard)) {
+      return newWhiteWizard;
+    }
+    return null;
   }
 
   /**
@@ -138,14 +143,13 @@ public class CharacterFactory {
    * @see #addPlayableCharacter(IPlayableCharacter) : a part of the code is so similar.
    */
   public Enemy createAnEnemy(@NotNull final String name, final int maxHealthPoints,
-                             final int defense, final int attack, final int weight)
-      throws CharacterAlreadyCreated {
+                             final int defense, final int attack, final int weight) {
 
     final Enemy newEnemy = new Enemy(name, maxHealthPoints, defense, attack, weight, turnsQueue);
-    if (enemies.putIfAbsent(newEnemy, false) != null) {
-      throw new CharacterAlreadyCreated(name);
+    if (enemies.putIfAbsent(newEnemy, false) == null) {
+      return newEnemy;
     }
-    return newEnemy;
+    return null;
   }
 
 }

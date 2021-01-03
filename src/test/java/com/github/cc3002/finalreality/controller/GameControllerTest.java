@@ -1,11 +1,9 @@
 package com.github.cc3002.finalreality.controller;
 
-import com.github.cc3002.finalreality.model.character.CharacterAlreadyCreated;
 import com.github.cc3002.finalreality.model.character.NonEquippedWeapon;
 import com.github.cc3002.finalreality.model.weapon.NonAvailableWeapon;
 import com.github.cc3002.finalreality.model.weapon.UnexpectedBehavior;
 import com.github.cc3002.finalreality.model.weapon.UnsupportedWeapon;
-import com.github.cc3002.finalreality.model.weapon.WeaponAlreadyCreated;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +53,7 @@ class GameControllerTest {
   /**
    * Initializes every variable to run properly the test suite of this class.
    */ @BeforeEach
-  void setUp() throws CharacterAlreadyCreated, WeaponAlreadyCreated {
+  void setUp() {
     controller = new GameController();
 
     engineer = controller.createAnEngineer("engineer", CHARACTER_MAX_HP, CHARACTER_DEF);
@@ -322,7 +320,7 @@ class GameControllerTest {
    *  attack one and only one member of the party.
    * This method test if the Game Is Over when all the playable characters are K.O. too.
    */ @Test
-  void enemyTurnTest() throws CharacterAlreadyCreated, NonEquippedWeapon, InterruptedException {
+  void enemyTurnTest() throws NonEquippedWeapon, InterruptedException {
     final CharacterCode onePunchMan = controller.createAnEnemy("One Punch Man",
         100, 100, 1000000, 0);
     controller.updateTurnOwner();
@@ -360,7 +358,7 @@ class GameControllerTest {
   /**
    * Test if the gam recognize whe the player actually wins.
    */ @Test
-  void playerWinsTest() throws WeaponAlreadyCreated, InterruptedException, UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon, NonEquippedWeapon {
+  void playerWinsTest() throws InterruptedException, UnexpectedBehavior, NonAvailableWeapon, UnsupportedWeapon, NonEquippedWeapon {
     final WeaponCode infinityGauntlet1 = controller.createAnAxe("Infinity Gauntlet",
         1000000, 0);
     final WeaponCode infinityGauntlet2 = controller.createAnAxe("Infinity Gauntlet",

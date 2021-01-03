@@ -16,11 +16,45 @@ enemies controlled by the computer.
 
 ---
 
-Important for the _Tarea 2_
+Important for the _Tarea 3_
 ---------------------------
 
 ###_Entregas Parciales_
-The first two _entregas parciales_ were made, so that should be considered to the assigned points of this _Tarea_.
+The first _entrega parcial_ for this _Tarea 2_ was made, so that should be considered to the
+assigned points of this _Tarea_.
+
+
+How To play
+-----------
+
+To play my version of Final Reality you have to run this program, specifically the file 
+*FinalReality.java*.
+
+Let me to explain the gui, after it starts you should press the start button, which is in the bottom
+of the window. Immediately after that, you will start the game, and one of your pre-created
+characters should play, you have to choose a weapon (every character start without a weapon 
+equipped), to choose a weapon there are two lateral arrows (one pointing to the left, and the other
+to the right) which you could press to see all the available weapons.
+
+In the configuration that I made you will always have a weapon to be equipped to your character, to 
+actually equip a weapon you have to press the *EQUIP* button, and after that you will see that your
+character has that weapon as its current equipped weapon.
+
+You could try to equip every weapon available, but, for example, a White wizard can only be equipped
+with a Staff, when you try to equip a not compatible weapon, the program will tell you, and, (clearly)
+the weapon will not be equipped.
+
+After you took your favorite weapon for your current character, you have to decide which enemy to 
+attack, for this the process is equals to the equipping process, but after you press the *ATTACK*
+button, your turn will be over, so decide well!
+
+I you try to attack, and you don't have a weapon equipped, the program will tell you and the attack
+will not be effectuated.
+
+This pre-configuration could result in a win run, or you could lose, so with this you could see what
+happen in any case.
+
+I think that's all :D
 
 
 The Program
@@ -44,6 +78,7 @@ and Bows (Knives instead of Staffs).
  At the second phase of the game we won't take out the character of the queue, instead we will
  restart the turn owner of the game.
 
+- When a playable character gets knocked out, her/his equipped weapon keeps equipped.  
 
 - By now, the rest of the functionalities should be like the _Descripción del Proyecto_ says.
 
